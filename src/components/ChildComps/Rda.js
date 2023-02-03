@@ -10,7 +10,7 @@ const Rda = () => {
           {" "}
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Risk Disclosure Aggrement</h1>
+          <h1>Risk Disclosure Aggrement</h1>
         </AuthLink>
       </Header>
       <Content>

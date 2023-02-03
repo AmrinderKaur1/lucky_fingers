@@ -3,34 +3,30 @@ import { NavLink as Link } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
-export const AuthContainer = styled.div`
-  /* padding: 14px; */
-`;
+export const AuthContainer = styled.div``;
 
 export const AuthLink = styled(Link)`
   color: #fff;
   cursor: pointer;
   text-decoration: none;
+  display: flex;
+  align-items: center;
 `;
+
 export const Header = styled.div`
   display: flex;
+  position: sticky;
+  top: 0;
   justify-content: space-between;
-  /* background: linear-gradient(90deg,#ff9801,#ff570a); */
-  /* background: linear-gradient(329deg,#ff9801,#ff570a); */
+  align-items: center;
+  padding: 10px;
   background: linear-gradient(179deg, #ff9801, #ff570a);
   cursor: pointer;
   color: #fff;
   margin-bottom: 1rem;
   border: none;
   h1 {
-    font-size: 21px;
-    /* padding-left: 20px; */
-    transform: translate(10%, -39%);
-  }
-  .side-icon {
-    /* transform: translate(-60%, 37%); */
-    padding-top: 5%;
-    padding-right: 3%;
+    font-size: 18px;
   }
 `;
 
@@ -52,14 +48,11 @@ export const PaymentSelectors = styled.p`
   border-bottom-style: solid;
   border-bottom-width: 3.1px;
   width: fit-content;
-
-  /* &:active {
-    borderBottomColor: #ff9402;
-  } */
 `;
 
 export const Icon = styled(LeftOutlined)`
-  transform: translate(10%, 83%);
+  font-size: 15px;
+  padding-right: 5px;
 `;
 
 export const Btn = styled(Button)`
@@ -68,7 +61,6 @@ export const Btn = styled(Button)`
   padding: 0 12px;
   font-size: ${(props) => (props.otp ? "11px" : "16px")};
   color: #fff;
-  /* width: 170px; */
   width: ${(props) => !props.otp && "170px"};
   margin-left: ${(props) => !props.otp && "calc(50% - 85px)"};
   height: ${(props) => !props.otp && "40px"};

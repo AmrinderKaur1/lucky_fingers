@@ -10,11 +10,11 @@ const PrivacyPolicy = () => {
           {" "}
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Privacy Policy</h1>
+          <h1>Privacy Policy</h1>
         </AuthLink>
       </Header>
       <Content>
-        <p style={{marginBlockStart: '1em',marginBlockEnd: '1em'}}>
+        <p>
           This Privacy Policy describes Our policies and procedures on the
           collection, use and disclosure of Your information when You use the
           Service and tells You about Your privacy rights and how the law

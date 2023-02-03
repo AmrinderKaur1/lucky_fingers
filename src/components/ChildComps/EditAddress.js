@@ -54,7 +54,7 @@ const EditAddress = (props) => {
         <AuthLink to={"/pages/person/address"}>
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>{props.heading}</h1>
+          <h1>{props.heading}</h1>
         </AuthLink>
       </Header>
       {renderEditAddress()}

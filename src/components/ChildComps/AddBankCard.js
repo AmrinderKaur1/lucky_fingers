@@ -94,7 +94,7 @@ const AddBankCard = () => {
         <Header style={{ margin: "0" }}>
           <AuthLink to={"/pages/person/bank"}>
             <Icon />
-            <h1 style={{ paddingLeft: "12px" }}>Add Bank Card</h1>
+            <h1>Add Bank Card</h1>
           </AuthLink>
         </Header>
         <SubHeadings>

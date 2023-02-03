@@ -10,7 +10,7 @@ import {
   InputBoxes,
   AuthLink,
 } from "./LoginElements";
-
+import Footer from "../../Footer";
 
 const ForgotPassword = (props) => {
   const handleNumericKeyPress = (e) => {
@@ -23,41 +23,47 @@ const ForgotPassword = (props) => {
   };
 
   return (
-    <AuthContainer>
-      <Header>
-        <AuthLink to={props.isProfile ? "/profile" : "/login"}>
-          <Icon />
-          <h1 style={{ paddingLeft: "5px" }}>Reset Password</h1>
-        </AuthLink>
-      </Header>
-      <InputBoxes>
-        <Input
-          placeholder="Mobile Number"
-          prefix={<MobileOutlined />}
-          onKeyPress={handleNumericKeyPress}
-          maxLength={10}
-          style={{ marginBottom: "1rem", height: "40px" }}
-        />
-        <Input
-          placeholder="Verification Code"
-          prefix={<CodeOutlined />}
-          onKeyPress={handleNumericKeyPress}
-          maxLength={6}
-          suffix={<Btn otp={true} login={false}>OTP</Btn>}
-          style={{ marginBottom: "1rem" }}
-        />
-        <Input
-          placeholder="New Password"
-          prefix={<KeyOutlined />}
-          maxLength={12}
-          style={{ marginBottom: "1rem", height: "40px" }}
-        />
-      </InputBoxes>
+    <>
+      <AuthContainer>
+        <Header>
+          <AuthLink to={props.isProfile ? "/profile" : "/login"}>
+            <Icon />
+            <h1>Reset Password</h1>
+          </AuthLink>
+        </Header>
+        <InputBoxes>
+          <Input
+            placeholder="Mobile Number"
+            prefix={<MobileOutlined />}
+            onKeyPress={handleNumericKeyPress}
+            maxLength={10}
+            style={{ marginBottom: "1rem", height: "40px" }}
+          />
+          <Input
+            placeholder="Verification Code"
+            prefix={<CodeOutlined />}
+            onKeyPress={handleNumericKeyPress}
+            maxLength={6}
+            suffix={
+              <Btn otp={true} login={false}>
+                OTP
+              </Btn>
+            }
+            style={{ marginBottom: "1rem" }}
+          />
+          <Input
+            placeholder="New Password"
+            prefix={<KeyOutlined />}
+            maxLength={12}
+            style={{ marginBottom: "1rem", height: "40px" }}
+          />
+        </InputBoxes>
 
-      <AuthLink to={"/reset-password"}>
-        <Btn otp={false}>Continue</Btn>
-      </AuthLink>
-    </AuthContainer>
+        <AuthLink to={"/reset-password"}>
+          <Btn otp={false}>Continue</Btn>
+        </AuthLink>
+      </AuthContainer>
+    </>
   );
 };
 

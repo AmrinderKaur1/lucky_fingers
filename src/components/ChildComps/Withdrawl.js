@@ -118,7 +118,7 @@ const Withdrawl = () => {
       <Header>
         <AuthLink to={"/profile"}>
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Withdrawl</h1>
+          <h1>Withdrawl</h1>
         </AuthLink>
         <AuthLink to={"/pages/person/withdrawl-record"}><MenuOutlined className="side-icon"/></AuthLink>
       </Header>

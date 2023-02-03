@@ -7,6 +7,7 @@ import img2 from "../../images/search/img2.jpg";
 import img3 from "../../images/search/img3.jpg";
 import img4 from "../../images/search/img4.jpg";
 import { SearchBox, SearchContainer } from "./SearchElements";
+import Footer from "../Footer";
 
 const { Search } = Input;
 const CardData = [
@@ -39,16 +40,19 @@ const CardData = [
 const SearchPage = () => {
   const onSearch = (value) => console.log(value);
   return (
-    <SearchContainer>
-      <SearchBox
-        placeholder="input search text"
-        allowClear
-        enterButton="Search"
-        size="large"
-        // onSearch={onSearch}
-      />
-      <Cards CardData={CardData} margin={false} height={true} />
-    </SearchContainer>
+    <>
+      <SearchContainer>
+        <SearchBox
+          placeholder="input search text"
+          allowClear
+          enterButton="Search"
+          size="large"
+          // onSearch={onSearch}
+        />
+        <Cards CardData={CardData} margin={false} height={true} />
+      </SearchContainer>
+      <Footer />
+    </>
   );
 };
 

@@ -113,7 +113,7 @@ const Address = (props) => {
         <AuthLink to={"/profile"}>
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>{props.heading}</h1>
+          <h1>{props.heading}</h1>
         </AuthLink>
         <AuthLink to={"/pages/person/add-address"}><PlusOutlined className="side-icon" /></AuthLink>
       </Header>

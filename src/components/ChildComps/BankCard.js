@@ -85,7 +85,7 @@ const BankCard = () => {
         <AuthLink to={"/profile"}>
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Bank Card</h1>
+          <h1>Bank Card</h1>
         </AuthLink>
         <AuthLink to={"/pages/person/addbank"}><PlusOutlined className="side-icon" /></AuthLink>
       </Header>

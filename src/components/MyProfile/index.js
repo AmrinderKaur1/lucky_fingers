@@ -24,6 +24,7 @@ import {
   DropdownCol,
   DropdownA,
 } from "./MyProfileElements";
+import Footer from "../Footer";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Profile = () => {
   const [openAboutSec, setOpenAboutSec] = useState(false);
   const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
   const [isNickNameModal, setNickNameModal] = useState(false);
-  const [nickName, setNickName] = useState("")
+  const [nickName, setNickName] = useState("");
 
   const showModal = () => {
     setIsNoticeModalOpen(true);
@@ -63,7 +64,7 @@ const Profile = () => {
   };
 
   const handleNickName = useCallback((e) => {
-    setNickName(e)
+    setNickName(e);
   }, []);
 
   const nickNameModal = () => {
@@ -83,26 +84,26 @@ const Profile = () => {
   };
 
   const handleClick = (option) => {
-    if (option === 'Recharge') {
-      navigate('/pages/person/recharge')
-    } else if (option === 'Withdrawl') {
-      navigate('/pages/person/withdrawl')
-    } else if (option === 'Transactions') {
-      navigate('/pages/person/transactions')
-    } else if (option === 'Bank Card') {
-      navigate('/pages/person/bank')
-    } else if (option === 'Address') {
-      navigate('/pages/person/address')
-    } else if (option === 'Reset Password') {
-      navigate('/pages/person/password-reset')
-    } else if (option === 'Complaints and Suggestions') {
-      navigate('/pages/person/complaint')
-    } else if (option === 'Privacy Policy') {
-      navigate('/pages/person/privacy')
-    } else if (option === 'Risk Disclosure Agreement') {
-      navigate('/pages/person/risk')
+    if (option === "Recharge") {
+      navigate("/pages/person/recharge");
+    } else if (option === "Withdrawl") {
+      navigate("/pages/person/withdrawl");
+    } else if (option === "Transactions") {
+      navigate("/pages/person/transactions");
+    } else if (option === "Bank Card") {
+      navigate("/pages/person/bank");
+    } else if (option === "Address") {
+      navigate("/pages/person/address");
+    } else if (option === "Reset Password") {
+      navigate("/pages/person/password-reset");
+    } else if (option === "Complaints and Suggestions") {
+      navigate("/pages/person/complaint");
+    } else if (option === "Privacy Policy") {
+      navigate("/pages/person/privacy");
+    } else if (option === "Risk Disclosure Agreement") {
+      navigate("/pages/person/risk");
     }
-  }
+  };
 
   const renderDropdown = (content) => {
     return content.map((val, index) => {
@@ -120,9 +121,9 @@ const Profile = () => {
   };
 
   const handleBtnRecharge = () => {
-    navigate("/pages/person/recharge")
-  }
-  
+    navigate("/pages/person/recharge");
+  };
+
   const renderCard = () => {
     return (
       <CardContainer>
@@ -183,14 +184,14 @@ const Profile = () => {
         <Divider style={{ margin: "6px" }} />
         {openWallet &&
           renderDropdown(["Recharge", "Withdrawl", "Transactions"])}
-        <Row onClick={() => handleClick('Bank Card')}>
+        <Row onClick={() => handleClick("Bank Card")}>
           <Col span={16} style={{ padding: "0 5px", height: "20px" }}>
             <CreditCardOutlined style={{ fontSize: "12px" }} />
             &nbsp;Bank Card
           </Col>
         </Row>
         <Divider style={{ margin: "6px" }} />
-        <Row onClick={() => handleClick('Address')}>
+        <Row onClick={() => handleClick("Address")}>
           <Col span={16} style={{ padding: "0 5px", height: "20px" }}>
             <HomeOutlined style={{ fontSize: "12px" }} />
             &nbsp;Address
@@ -223,7 +224,7 @@ const Profile = () => {
         </Row>
         <Divider style={{ margin: "6px" }} />
         {openAppSec && renderDropdown(["Android Download"])}
-        <Row onClick={() => handleClick('Complaints and Suggestions')}>
+        <Row onClick={() => handleClick("Complaints and Suggestions")}>
           <Col span={16} style={{ padding: "0 5px", height: "20px" }}>
             <MessageOutlined style={{ fontSize: "12px" }} />
             &nbsp;Complaints and Suggestions
@@ -249,17 +250,22 @@ const Profile = () => {
   };
 
   const handleLogout = useCallback(() => {
-    // TODO : set isAuthenticated (redux state to be created) to false 
-    navigate('/login')
-  }, [])
+    // TODO : set isAuthenticated (redux state to be created) to false
+    navigate("/login");
+  }, []);
 
   return (
-    <ProfileContainer>
-      {renderCard()} {renderContents()}
-      {noticeModal()}
-      {nickNameModal()}
-      <Btn style={{ width: "120px" }} onClick={handleLogout}>Logout</Btn>
-    </ProfileContainer>
+    <>
+      <ProfileContainer>
+        {renderCard()} {renderContents()}
+        {noticeModal()}
+        {nickNameModal()}
+        <Btn style={{ width: "120px" }} onClick={handleLogout}>
+          Logout
+        </Btn>
+      </ProfileContainer>
+      <Footer />
+    </>
   );
 };
 

@@ -72,9 +72,8 @@ const WithdrawlRecord = () => {
     <RecordContainer>
       <Header>
         <AuthLink to={"/pages/person/withdrawl"}>
-          {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Withdrawl Record</h1>
+          <h1>Withdrawl Record</h1>
         </AuthLink>
       </Header>
       <Info>{renderInfo()}</Info>

@@ -9,6 +9,7 @@ import carousel4 from "../../images/carousel4.jpg";
 import item0 from '../../images/item0.jpg'
 import { CarouselImg, CarouselElement } from "./HomeElements";
 import Cards from "../Cards";
+import Footer from "../Footer";
 
 const CardData = [
   {
@@ -53,6 +54,7 @@ const Home = () => {
           </CarouselElement>
       </Carousel>
       <Cards CardData={CardData} margin={true}/>
+      <Footer />
     </>
   );
 };

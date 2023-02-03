@@ -14,7 +14,7 @@ const Transactions = () => {
       <Header>
         <AuthLink to={"/profile"}>
             <Icon />
-            <h1 style={{paddingLeft: '12px'}}>Transactions</h1>
+            <h1>Transactions</h1>
         </AuthLink>
       </Header>
       {!transactionRec.length && <Empty />}

@@ -55,7 +55,7 @@ const RechargeRecord = () => {
         <AuthLink to={"/pages/person/recharge"}>
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Recharge Record</h1>
+          <h1>Recharge Record</h1>
         </AuthLink>
       </Header>
       <Info>{renderInfo()}</Info>

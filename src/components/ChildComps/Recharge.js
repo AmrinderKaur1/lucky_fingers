@@ -62,9 +62,9 @@ const Recharge = () => {
         <AuthLink to={"/profile"}>
           {/* put link here  */}
           <Icon />
-          <h1 style={{ paddingLeft: "12px" }}>Recharge</h1>
+          <h1>Recharge</h1>
         </AuthLink>
-        <AuthLink to={'/pages/person/recharge-record'}><MenuOutlined className="menu-icon"/></AuthLink>
+        <AuthLink to={'/pages/person/recharge-record'}><MenuOutlined /></AuthLink>
       </Header>
       <ChildContainer>
         <Balance>Balance: ₹1.3</Balance>
