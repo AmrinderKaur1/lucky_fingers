@@ -51,7 +51,7 @@ const SearchPage = () => {
         />
         <Cards CardData={CardData} margin={false} height={true} />
       </SearchContainer>
-      <Footer />
+      <Footer isAuthenticated={true} />
     </>
   );
 };

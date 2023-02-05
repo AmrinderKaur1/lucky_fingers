@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { MobileOutlined, KeyOutlined } from "@ant-design/icons";
 import { Input } from "antd";
+import ReCAPTCHA from "react-google-recaptcha";
+import styled from "styled-components";
 
 import {
   AuthContainer,
@@ -14,6 +16,13 @@ import {
 import Footer from "../../Footer";
 
 const Login = () => {
+  const [isRecaptchaRequired, setRecaptchaRequired] = useState(true);
+  const [recaptchaToken, setRecaptchaToken] = useState('set to empty if want error message');
+
+  const recapChangeHandler = () => {
+    console("make continue btn enabled if verified successfully.");
+  };
+
   const handleNumericKeyPress = (e) => {
     const charCode = e.charCode != null ? e.charCode : e.keyCode;
     const charString = String.fromCharCode(charCode);
@@ -21,6 +30,24 @@ const Login = () => {
     if (!charString.match(/^[0-9\b]+$/)) {
       e.preventDefault();
     }
+  };
+
+  const recaptchaCall = () => {
+    return (
+      <>
+        <RecaptchaContainer>
+          {!recaptchaToken && (
+          <RecaptchaErrorContainer>
+              Please confirm you are human to continue.
+            </RecaptchaErrorContainer>
+          )}
+          <ReCAPTCHA
+            sitekey="site key"
+            onChange={recapChangeHandler}
+          />
+        </RecaptchaContainer>
+      </>
+    );
   };
 
   return (
@@ -47,6 +74,7 @@ const Login = () => {
             style={{ marginBottom: "1rem", height: "40px" }}
           />
         </InputBoxes>
+        {isRecaptchaRequired && recaptchaCall()}
         <AuthLink to={"/login"}>
           <Btn login={true}>Continue</Btn>
         </AuthLink>
@@ -59,9 +87,24 @@ const Login = () => {
           </AuthLink>
         </ButtonSec>
       </AuthContainer>
-      <Footer />
+      <Footer isAuthenticated={false} />
     </>
   );
 };
 
 export default Login;
+
+const RecaptchaContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 13px;
+`;
+
+const RecaptchaErrorContainer = styled.div`
+  color: red;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-size: 13px;
+`;

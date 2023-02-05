@@ -264,7 +264,7 @@ const Profile = () => {
           Logout
         </Btn>
       </ProfileContainer>
-      <Footer />
+      <Footer isAuthenticated={true} />
     </>
   );
 };
