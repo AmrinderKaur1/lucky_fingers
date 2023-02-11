@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import Footer from "./components/Footer";
 import { GlobalStyles } from "./GlobalStyles";
@@ -23,6 +24,7 @@ import AddSuggNComp from "./components/ChildComps/AddSuggNComp";
 import PrivacyPolicy from "./components/ChildComps/PrivacyPolicy";
 import Rda from "./components/ChildComps/Rda";
 import ProtectedRoute from "./ProtectedRoutes";
+import BetGame from "./components/Auth/Login/game";
 
 let isAuthenticated = true;
 
@@ -39,6 +41,7 @@ function App() {
           <Route path="/reset-password" element={<ForgotPassword />} />
 
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+            <Route path='/win' element={<BetGame />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/person/recharge" element={<Recharge />} />
             <Route

@@ -36,7 +36,7 @@ export const divider = styled(Divider)`
 
 export const CardContainer = styled(Card)`
     background: #f9f7e9;
-    margin: 24px 14px;
+    margin: 14px;
     .ant-card-body {
         padding: 16px;
     }

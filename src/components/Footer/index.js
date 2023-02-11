@@ -25,6 +25,9 @@ const Footer = (props) => {
   const handleSearchClick = useCallback(() => {
     navigate("/search", { replace: true });
   }, []);
+  const handleWinClick = useCallback(() => {
+    navigate("/win", { replace: true });
+  }, []);
   const handleMyClick = useCallback(() => {
     isAuthenticated ? navigate("/profile") : navigate("/login");
     // navigate('/login');
@@ -49,7 +52,7 @@ const Footer = (props) => {
           <FooterIcons>
             <RocketOutlined />
           </FooterIcons>
-          <FooterText onClick={handleSearchClick}>Win</FooterText>
+          <FooterText onClick={handleWinClick}>Win</FooterText>
         </FooterBars>
       )}
       <FooterBars>
