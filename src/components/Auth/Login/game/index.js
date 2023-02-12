@@ -1,7 +1,7 @@
-import React from "react";
-import { Row, Col } from "antd";
+import React, { useCallback, useState } from "react";
+import { Row, Col, Table, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
-import { TrophyOutlined } from "@ant-design/icons";
+import { TrophyOutlined, ReconciliationOutlined } from "@ant-design/icons";
 
 import Footer from "../../../Footer";
 import {
@@ -17,27 +17,124 @@ import {
   BetDesBtns,
   GameButton,
   BetButtonsRow,
+  ParityRecordCont,
+  DividerZero,
+  Rounds,
+  RecordTable,
 } from "./GameElements";
 import { CardContainer, Btn } from "../../../MyProfile/MyProfileElements";
+import GameModal from "./GameModal";
 
-const betValues = {'0': 'green', '1': 'blue', '2': 'red', '3': 'blue', '4': 'red', '5': 'green', 
-'6': 'red', '7': 'blue', '8': 'red', '9': 'blue'}
+const betValues = {
+  0: "green",
+  1: "blue",
+  2: "red",
+  3: "blue",
+  4: "red",
+  5: "green",
+  6: "red",
+  7: "blue",
+  8: "red",
+  9: "blue",
+};
+const { Column } = Table;
+const myParityValues = [];
+const parityValues = [
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["red", "green"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["red", "red"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["green"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["red", "green"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["blue"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["green"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["red", "blue"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["blue", "green"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["red"],
+  },
+  {
+    key: "1",
+    period: "20200202093939",
+    price: "37384",
+    number: "2",
+    result: ["red"],
+  },
+];
 const BetGame = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalColor, setModalColor] = useState('')
 
   const handleBtnRecharge = () => {
     navigate("/pages/person/recharge");
   };
 
-  // const renderButtonRows = () => {
-  //   return (
-  //     {Object.keys(betValues)}
-  //     <GameButton childBtns color={'green'}>0</GameButton>
-  //   )
-  // }
+  const showModal = (clr) => {
+    setIsModalOpen(true);
+    setModalColor(clr);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <GameContainer>
+        {/* card  */}
         <CardContainer>
           <Row>
             <Col span={16} style={{ marginTop: "8px" }}>
@@ -53,6 +150,7 @@ const BetGame = () => {
             </Col>
           </Row>
         </CardContainer>
+        {/* game and parity  */}
         <MainContainer>
           <PlayOptionHeader>
             <PlayOption>Parity</PlayOption>
@@ -77,31 +175,129 @@ const BetGame = () => {
               </Countdown>
             </PeriodCountdown>
             <BetDesBtns>
-              <GameButton color={'green'}>Join Green</GameButton>
-              <GameButton color={'blue'}>Join Blue</GameButton>
-              <GameButton color={'red'}>Join Red</GameButton>
+              <GameButton color={"green"} onClick={() => showModal('green')}>Join Green</GameButton>
+              <GameButton color={"blue"} onClick={() => showModal('blue')}>Join Blue</GameButton>
+              <GameButton color={"red"} onClick={() => showModal('red')}>Join Red</GameButton>
             </BetDesBtns>
             {/* {renderButtonRows()} */}
             <BetButtonsRow>
-              <GameButton childBtns color={'green'}>0</GameButton>
-              <GameButton childBtns color={'blue'}>1</GameButton>
-              <GameButton childBtns color={'red'}>2</GameButton>
-              <GameButton childBtns color={'blue'}>3</GameButton>
-              <GameButton childBtns color={'red'}>4</GameButton>
-              </BetButtonsRow>
-              <BetButtonsRow>
-              <GameButton childBtns color={'green'}>5</GameButton>
-              <GameButton childBtns color={'red'}>6</GameButton>
-              <GameButton childBtns color={'blue'}>7</GameButton>
-              <GameButton childBtns color={'red'}>8</GameButton>
-              <GameButton childBtns color={'blue'}>9</GameButton>
+              <GameButton childBtns color={"green"}>
+                0
+              </GameButton>
+              <GameButton childBtns color={"blue"}>
+                1
+              </GameButton>
+              <GameButton childBtns color={"red"}>
+                2
+              </GameButton>
+              <GameButton childBtns color={"blue"}>
+                3
+              </GameButton>
+              <GameButton childBtns color={"red"}>
+                4
+              </GameButton>
+            </BetButtonsRow>
+            <BetButtonsRow>
+              <GameButton childBtns color={"green"}>
+                5
+              </GameButton>
+              <GameButton childBtns color={"red"}>
+                6
+              </GameButton>
+              <GameButton childBtns color={"blue"}>
+                7
+              </GameButton>
+              <GameButton childBtns color={"red"}>
+                8
+              </GameButton>
+              <GameButton childBtns color={"blue"}>
+                9
+              </GameButton>
             </BetButtonsRow>
           </DisplayGame>
+        </MainContainer>
+        <ParityRecordCont>
           <PlayOptionHeader>
             <div>
-          <TrophyOutlined />&nbsp;Parity Record</div>
+              <TrophyOutlined />
+              &nbsp;Parity Record
+            </div>
           </PlayOptionHeader>
-        </MainContainer>
+          <DividerZero />
+          <RecordTable
+            dataSource={parityValues}
+            pagination={{
+              size: "small",
+              simple: true,
+              defaultCurrent: 10,
+              defaultPageSize: 10,
+              total: 100,
+            }}
+          >
+            <Column title="Period" dataIndex="period" key="period" />
+            <Column title="Price" dataIndex="price" key="price" />
+            <Column title="Number" dataIndex="number" key="number" />
+            <Column
+              className="result-column"
+              title="Result"
+              dataIndex="result"
+              key="result"
+              render={(result) => (
+                <>
+                  {result.map((res) => (
+                    <>
+                      <Rounds key={res} color={res} />
+                      &nbsp;
+                    </>
+                  ))}
+                </>
+              )}
+            />
+          </RecordTable>
+        </ParityRecordCont>
+
+
+        {/* my parity record  */}
+        <ParityRecordCont>
+          <PlayOptionHeader>
+            <div>
+            <ReconciliationOutlined />
+              &nbsp;My Parity Record
+            </div>
+          </PlayOptionHeader>
+          <DividerZero />
+          <RecordTable
+            dataSource={myParityValues}
+            pagination={{
+              size: "small",
+              simple: true,
+              defaultCurrent: 10,
+              defaultPageSize: 10,
+              total: 100,
+            }}
+          >
+            <Column title="Period" dataIndex="period" key="period" />
+            <Column title="Price" dataIndex="price" key="price" />
+            <Column title="Number" dataIndex="number" key="number" />
+            <Column
+              className="result-column"
+              title="Result"
+              dataIndex="result"
+              key="result"
+              render={(result) => (
+                <>
+                  {result.map((res) => (
+                    <>
+                      <Rounds key={res} color={res} />
+                      &nbsp;
+                    </>
+                  ))}
+                </>
+              )}
+            />
+          </RecordTable>
+        </ParityRecordCont>
+        {isModalOpen && <GameModal color={modalColor} isModalOpen={true}/>}
       </GameContainer>
       <Footer isAuthenticated={true} />
     </>
