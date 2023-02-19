@@ -38,7 +38,6 @@ const CardData = [
 ];
 
 const SearchPage = () => {
-  const onSearch = (value) => console.log(value);
   return (
     <>
       <SearchContainer>

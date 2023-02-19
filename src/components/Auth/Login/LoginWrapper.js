@@ -3,6 +3,7 @@ import { MobileOutlined, KeyOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   AuthContainer,
@@ -14,6 +15,7 @@ import {
   ButtonSec,
 } from "./LoginElements";
 import Footer from "../../Footer";
+import { setUserAuthenticated } from "../../../redux/auth/auth.actions";
 
 const Login = () => {
   const [isRecaptchaRequired, setRecaptchaRequired] = useState(true);
@@ -23,6 +25,10 @@ const Login = () => {
     console("make continue btn enabled if verified successfully.");
   };
 
+  const {isAuthenticated} = useSelector((state) => ({
+    isAuthenticated: state.login.isAuthenticated,
+  }))
+  const dispatch = useDispatch();
   const handleNumericKeyPress = (e) => {
     const charCode = e.charCode != null ? e.charCode : e.keyCode;
     const charString = String.fromCharCode(charCode);
@@ -73,10 +79,10 @@ const Login = () => {
             maxLength={12}
             style={{ marginBottom: "1rem", height: "40px" }}
           />
-        </InputBoxes>
+        </InputBoxes> 
         {isRecaptchaRequired && recaptchaCall()}
         <AuthLink to={"/login"}>
-          <Btn login={true}>Continue</Btn>
+          <Btn login={true} onClick={() => dispatch(setUserAuthenticated(!isAuthenticated))}>Continue</Btn>
         </AuthLink>
         <ButtonSec>
           <AuthLink to={"/register"}>

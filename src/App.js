@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import Footer from "./components/Footer";
 import { GlobalStyles } from "./GlobalStyles";
@@ -25,12 +26,15 @@ import PrivacyPolicy from "./components/ChildComps/PrivacyPolicy";
 import Rda from "./components/ChildComps/Rda";
 import ProtectedRoute from "./ProtectedRoutes";
 import BetGame from "./components/Auth/Login/game";
+import store, {persistor} from "./store";
 
 let isAuthenticated = true;
 
 function App() {
   return (
     <>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
@@ -95,6 +99,8 @@ function App() {
         </Routes>
         {/* {!isAuthenticated && <Footer /> } */}
       </BrowserRouter>
+      </PersistGate>
+      </Provider>
     </>
   );
 }

@@ -14,7 +14,6 @@ const Recharge = () => {
 //   }, []);
 
   const handleClick = useCallback((amt) => {
-    console.log(amt, "amount");
     setRechargeAmount(amt);
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Checkbox, Button as Btn } from "antd";
 
 import {
@@ -15,18 +15,30 @@ import {
   CustomModalFooter,
 } from "./GameElements";
 import { DividerZero } from "./GameElements";
+import { useDispatch, useSelector } from "react-redux";
+import { handleChangeModalVisibility } from "../../../../helpers/modals";
 
-const GameModal = ({ color, isModalOpen }) => {
-  const [isModalOpen1, setIsModalOpen] = useState(isModalOpen);
+const GameModal = ({ color }) => {
+  const dispatch = useDispatch();
+  const { isJoinGreenVisible, isJoinBlueVisible, isJoinRedVisible } = useSelector((state) => ({
+    isJoinGreenVisible: state.modalStates.isJoinGreenVisible,
+    isJoinBlueVisible: state.modalStates.isJoinBlueVisible,
+    isJoinRedVisible: state.modalStates.isJoinRedVisible,
+  }));
+
   const [val, setVal] = useState(0);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  let modalName =
+    color === "green"
+      ? "isJoinGreenVisible"
+      : color === "blue"
+      ? "isJoinBlueVisible"
+      : "isJoinRedVisible";
+
   const handleOk = () => {
-    setIsModalOpen(false);
+    handleChangeModalVisibility(false, modalName, dispatch);
   };
   const handleCancel = () => {
-    setIsModalOpen(false);
+    handleChangeModalVisibility(false, modalName, dispatch);
   };
 
   const increment = () => {
@@ -39,13 +51,25 @@ const GameModal = ({ color, isModalOpen }) => {
       setVal(val - 1);
     }
   };
+
+  const handleOpen = () =>{
+    if (color === 'green') {
+      return isJoinGreenVisible
+    } else if (color === 'blue') {
+      return isJoinBlueVisible
+    } 
+    return isJoinRedVisible
+  }
+
   return (
     <GameModalByColor
       centered
-      open={isModalOpen1}
+      open={handleOpen()}
       onOk={handleOk}
       onCancel={handleCancel}
       footer={false}
+      destroyOnClose={true}
+      className={modalName}
     >
       <ModalHeading color={color}>Join {color}</ModalHeading>
       <ModalContent>

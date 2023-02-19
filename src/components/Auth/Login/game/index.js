@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Row, Col, Table, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TrophyOutlined, ReconciliationOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 
 import Footer from "../../../Footer";
 import {
@@ -24,6 +25,7 @@ import {
 } from "./GameElements";
 import { CardContainer, Btn } from "../../../MyProfile/MyProfileElements";
 import GameModal from "./GameModal";
+import { handleChangeModalVisibility } from "../../../../helpers/modals";
 
 const betValues = {
   0: "green",
@@ -113,6 +115,8 @@ const parityValues = [
 ];
 const BetGame = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalColor, setModalColor] = useState('')
 
@@ -121,14 +125,10 @@ const BetGame = () => {
   };
 
   const showModal = (clr) => {
+    const modalName = clr === 'green' ? 'isJoinGreenVisible' : clr === 'blue' ? 'isJoinBlueVisible' : 'isJoinRedVisible'
+    handleChangeModalVisibility(true, modalName, dispatch);
     setIsModalOpen(true);
     setModalColor(clr);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   return (
@@ -297,7 +297,7 @@ const BetGame = () => {
             />
           </RecordTable>
         </ParityRecordCont>
-        {isModalOpen && <GameModal color={modalColor} isModalOpen={true}/>}
+        {isModalOpen && <GameModal color={modalColor}/>}
       </GameContainer>
       <Footer isAuthenticated={true} />
     </>
