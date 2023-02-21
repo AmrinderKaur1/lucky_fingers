@@ -26,6 +26,7 @@ import {
 import { CardContainer, Btn } from "../../../MyProfile/MyProfileElements";
 import GameModal from "./GameModal";
 import { handleChangeModalVisibility } from "../../../../helpers/modals";
+import { playOptionButtons } from "../../../../helpers/heads";
 
 const betValues = {
   0: "green",
@@ -118,17 +119,27 @@ const BetGame = () => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalColor, setModalColor] = useState('')
+  const [modalColor, setModalColor] = useState("");
+  const [activeId, setActiveId] = useState(1);
 
   const handleBtnRecharge = () => {
     navigate("/pages/person/recharge");
   };
 
   const showModal = (clr) => {
-    const modalName = clr === 'green' ? 'isJoinGreenVisible' : clr === 'blue' ? 'isJoinBlueVisible' : 'isJoinRedVisible'
+    const modalName =
+      clr === "green"
+        ? "isJoinGreenVisible"
+        : clr === "blue"
+        ? "isJoinBlueVisible"
+        : "isJoinRedVisible";
     handleChangeModalVisibility(true, modalName, dispatch);
     setIsModalOpen(true);
     setModalColor(clr);
+  };
+
+  const activeHandler = (id) => {
+    setActiveId(id);
   };
 
   return (
@@ -153,10 +164,17 @@ const BetGame = () => {
         {/* game and parity  */}
         <MainContainer>
           <PlayOptionHeader>
-            <PlayOption>Parity</PlayOption>
-            <PlayOption>Sapre</PlayOption>
-            <PlayOption>Bcone</PlayOption>
-            <PlayOption>Emerd</PlayOption>
+            {playOptionButtons.map((element, index) => {
+              return (
+                <PlayOption
+                  onClick={() => setActiveId(element.id)}
+                  className={element.id === activeId ? "active" : ""}
+                  key={index}
+                >
+                  {element.name}
+                </PlayOption>
+              );
+            })}
           </PlayOptionHeader>
           <DisplayGame>
             <PeriodCountdown>
@@ -175,9 +193,15 @@ const BetGame = () => {
               </Countdown>
             </PeriodCountdown>
             <BetDesBtns>
-              <GameButton color={"green"} onClick={() => showModal('green')}>Join Green</GameButton>
-              <GameButton color={"blue"} onClick={() => showModal('blue')}>Join Blue</GameButton>
-              <GameButton color={"red"} onClick={() => showModal('red')}>Join Red</GameButton>
+              <GameButton color={"green"} onClick={() => showModal("green")}>
+                Join Green
+              </GameButton>
+              <GameButton color={"blue"} onClick={() => showModal("blue")}>
+                Join Blue
+              </GameButton>
+              <GameButton color={"red"} onClick={() => showModal("red")}>
+                Join Red
+              </GameButton>
             </BetDesBtns>
             {/* {renderButtonRows()} */}
             <BetButtonsRow>
@@ -256,12 +280,11 @@ const BetGame = () => {
           </RecordTable>
         </ParityRecordCont>
 
-
         {/* my parity record  */}
         <ParityRecordCont>
           <PlayOptionHeader>
             <div>
-            <ReconciliationOutlined />
+              <ReconciliationOutlined />
               &nbsp;My Parity Record
             </div>
           </PlayOptionHeader>
@@ -297,7 +320,7 @@ const BetGame = () => {
             />
           </RecordTable>
         </ParityRecordCont>
-        {isModalOpen && <GameModal color={modalColor}/>}
+        {isModalOpen && <GameModal color={modalColor} />}
       </GameContainer>
       <Footer isAuthenticated={true} />
     </>

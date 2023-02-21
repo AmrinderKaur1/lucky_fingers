@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Divider, Input, Row, Col } from "antd";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 import { RecordContainer } from "./RechargeRecord";
 import {
@@ -12,10 +13,14 @@ import {
 } from "../Auth/Login/LoginElements";
 import { PageButton } from "./Recharge";
 import { handleNumericKeyPress } from "../Auth/Login/Register";
+import { selectMop } from "../../helpers/heads";
 
 const AddBankCard = () => {
-  const [isSelectBankCard, setSelectBankCard] = useState(true);
-  const [isSelectUpi, setSelectUpi] = useState(false);
+  const location = useLocation();
+  const isUpiSelected = location.state.isSelectUpiOption;
+  console.log(location.state.isSelectUpiOption, 'isUpiSelected') 
+  const [isSelectBankCard, setSelectBankCard] = useState(!isUpiSelected);
+  const [isSelectUpi, setSelectUpi] = useState(isUpiSelected);
 
   const renderBankCard = () => {
     return (
@@ -79,31 +84,46 @@ const AddBankCard = () => {
     );
   };
 
-  const hanldeBankCardClick = useCallback(() => {
-    setSelectBankCard(true);
-    setSelectUpi(false);
-  }, []);
-  const handleUpiClick = useCallback(() => {
-    setSelectUpi(true);
-    setSelectBankCard(false);
-  }, []);
+  const selectorClickHandler = useCallback(
+    (idx) => {
+      if (idx === 0) {
+        setSelectBankCard(true);
+        setSelectUpi(false);
+      } else {
+        setSelectUpi(true);
+        setSelectBankCard(false);
+      }
+    },
+    [selectMop]
+  );
 
   return (
     <>
       <RecordContainer style={{ boxShadow: "none" }}>
         <Header style={{ margin: "0" }}>
-          <AuthLink to={"/pages/person/bank"}>
+          <AuthLink
+            to={location.state.navigateBackTo}
+          >
             <Icon />
             <h1>Add Bank Card</h1>
           </AuthLink>
         </Header>
         <SubHeadings>
-          <PaymentSelectors onClick={hanldeBankCardClick} >
-            Select Bank Card
-          </PaymentSelectors>
-          <PaymentSelectors onClick={handleUpiClick}>
-            Select UPI
-          </PaymentSelectors>
+          {selectMop.map((element, idx) => {
+            return (
+              <PaymentSelectors
+                onClick={() => selectorClickHandler(idx)}
+                key={idx}
+                className={
+                  (isSelectBankCard && idx === 0) || (isSelectUpi && idx === 1)
+                    ? "active"
+                    : ""
+                }
+              >
+                {element.title}
+              </PaymentSelectors>
+            );
+          })}
         </SubHeadings>
         {/* click actions to be handled  */}
         {isSelectBankCard && renderBankCard()}

@@ -44,7 +44,12 @@ const Withdrawl = () => {
 
   const handleClick = (val) => {
     if (val === 'Add Bank Card' || val === 'Add upi-withdrawl Card')  {
-      navigate('/pages/person/addbank')
+      navigate("/pages/person/addbank", {
+        state: {
+          navigateBackTo: "/pages/person/withdrawl" ,
+          isSelectUpiOption: val === 'Add upi-withdrawl Card',
+        },
+    });
     } 
   }
 

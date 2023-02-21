@@ -15,6 +15,7 @@ export const MainContainer = styled.div`
 export const PlayOptionHeader = styled.div`
   display: flex;
   justify-content: space-around;
+  background-color: #d7d4d4;
   div {
     height: 36px;
     display: inline-block;
@@ -30,11 +31,14 @@ export const PlayOption = styled.p`
   line-height: 30px;
   padding: 0 10px 15px 10px;
   font-size: 14px;
+  cursor: pointer;
 
-  /* underline  */
-  border-color: #cdc6c6;
-  border-bottom-style: solid;
-
+  &.active {
+    font-weight: 600; 
+    /* underline  */
+    border-color: black;
+    border-bottom-style: solid;
+   }
 `;
 export const DisplayGame = styled.div`
   background-color: #fefbfb;

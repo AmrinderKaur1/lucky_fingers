@@ -44,10 +44,12 @@ export const PaymentSelectors = styled.p`
   margin: 0 5px;
   padding: 0 10px 15px 10px;
 
-  /* underline  */
-  border-bottom-style: solid;
-  border-bottom-width: 3.1px;
-  width: fit-content;
+  &.active {
+     /* underline  */
+    border-bottom-style: solid;
+    border-bottom-width: 3.1px;
+    width: fit-content;
+  }
 `;
 
 export const Icon = styled(LeftOutlined)`

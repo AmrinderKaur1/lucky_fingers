@@ -87,7 +87,17 @@ const BankCard = () => {
           <Icon />
           <h1>Bank Card</h1>
         </AuthLink>
-        <AuthLink to={"/pages/person/addbank"}><PlusOutlined className="side-icon" /></AuthLink>
+        <AuthLink
+          to={{
+            pathname: "/pages/person/addbank",
+            state: {
+              navigateBackTo: "/pages/person/bank",
+              isSelectUpiOption: false,
+            },
+          }}
+        >
+          <PlusOutlined className="side-icon" />
+        </AuthLink>
       </Header>
       <div>{renderInfo()}</div>
       {open && renderModal()}
