@@ -88,12 +88,10 @@ const BankCard = () => {
           <h1>Bank Card</h1>
         </AuthLink>
         <AuthLink
-          to={{
-            pathname: "/pages/person/addbank",
-            state: {
-              navigateBackTo: "/pages/person/bank",
-              isSelectUpiOption: false,
-            },
+          to="/pages/person/addbank"
+          state={{
+            navigateBackTo: "/pages/person/bank",
+            isSelectUpiOption: false,
           }}
         >
           <PlusOutlined className="side-icon" />
