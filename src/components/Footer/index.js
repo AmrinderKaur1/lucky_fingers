@@ -6,6 +6,7 @@ import {
   RocketOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // local imports
 import {
@@ -15,8 +16,11 @@ import {
   FooterIcons,
 } from "./FooterElements";
 
-let isAuthenticated = true;
-const Footer = (props) => {
+
+const Footer = () => {
+  const {isAuthenticated} = useSelector((state) => ({
+    isAuthenticated: state.login.isAuthenticated,
+  }))
   const navigate = useNavigate();
 
   const handleHomeClick = useCallback(() => {
@@ -47,7 +51,7 @@ const Footer = (props) => {
         </FooterIcons>
         <FooterText onClick={handleSearchClick}>Search</FooterText>
       </FooterBars>
-      {props.isAuthenticated && (
+      {isAuthenticated && (
         <FooterBars>
           <FooterIcons>
             <RocketOutlined />

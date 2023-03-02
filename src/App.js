@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 import Footer from "./components/Footer";
@@ -28,11 +28,9 @@ import ProtectedRoute from "./ProtectedRoutes";
 import BetGame from "./components/Auth/Login/game";
 import store, {persistor} from "./store";
 
-let isAuthenticated = true;
 
 function App() {
   return (
-    <>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
       <BrowserRouter>
@@ -44,7 +42,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
 
-          <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+          <Route element={<ProtectedRoute />}>
             <Route path='/win' element={<BetGame />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/person/recharge" element={<Recharge />} />
@@ -100,8 +98,7 @@ function App() {
         {/* {!isAuthenticated && <Footer /> } */}
       </BrowserRouter>
       </PersistGate>
-      </Provider>
-    </>
+    </Provider>
   );
 }
 

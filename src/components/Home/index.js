@@ -54,7 +54,7 @@ const Home = () => {
           </CarouselElement>
       </Carousel>
       <Cards CardData={CardData} margin={true}/>
-      <Footer isAuthenticated={true} />
+      <Footer />
     </>
   );
 };

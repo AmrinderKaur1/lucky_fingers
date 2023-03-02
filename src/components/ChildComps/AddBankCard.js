@@ -18,7 +18,6 @@ import { selectMop } from "../../helpers/heads";
 const AddBankCard = () => {
   const location = useLocation();
   const isUpiSelected = location.state.isSelectUpiOption;
-  console.log(location.state.isSelectUpiOption, 'isUpiSelected') 
   const [isSelectBankCard, setSelectBankCard] = useState(!isUpiSelected);
   const [isSelectUpi, setSelectUpi] = useState(isUpiSelected);
 

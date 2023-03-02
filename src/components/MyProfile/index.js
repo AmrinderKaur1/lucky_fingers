@@ -14,6 +14,7 @@ import {
   UpOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import {
   ProfileContainer,
@@ -24,10 +25,12 @@ import {
   DropdownCol,
   DropdownA,
 } from "./MyProfileElements";
+import { setUserAuthenticated } from "../../redux/auth/auth.actions";
 import Footer from "../Footer";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [openWallet, setOpenWallet] = useState(false);
   const [openAccountSec, setOpenAccountSec] = useState(false);
   const [openAppSec, setOpenAppSec] = useState(false);
@@ -251,6 +254,7 @@ const Profile = () => {
 
   const handleLogout = useCallback(() => {
     // TODO : set isAuthenticated (redux state to be created) to false
+    dispatch(setUserAuthenticated(false))
     navigate("/login");
   }, []);
 
@@ -264,7 +268,7 @@ const Profile = () => {
           Logout
         </Btn>
       </ProfileContainer>
-      <Footer isAuthenticated={true} />
+      <Footer />
     </>
   );
 };

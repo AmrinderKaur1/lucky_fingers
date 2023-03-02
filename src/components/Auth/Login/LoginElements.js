@@ -66,6 +66,11 @@ export const Btn = styled(Button)`
   width: ${(props) => !props.otp && "170px"};
   margin-left: ${(props) => !props.otp && "calc(50% - 85px)"};
   height: ${(props) => !props.otp && "40px"};
+  &:disabled {
+    cursor: not-allowed;
+    background: #fff;
+    color: gray;
+  }
 `;
 
 export const ButtonSec = styled.div`

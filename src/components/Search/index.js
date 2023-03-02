@@ -50,7 +50,7 @@ const SearchPage = () => {
         />
         <Cards CardData={CardData} margin={false} height={true} />
       </SearchContainer>
-      <Footer isAuthenticated={true} />
+      <Footer />
     </>
   );
 };

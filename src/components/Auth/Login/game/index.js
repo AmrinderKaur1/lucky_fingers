@@ -322,7 +322,7 @@ const BetGame = () => {
         </ParityRecordCont>
         {isModalOpen && <GameModal color={modalColor} />}
       </GameContainer>
-      <Footer isAuthenticated={true} />
+      <Footer />
     </>
   );
 };

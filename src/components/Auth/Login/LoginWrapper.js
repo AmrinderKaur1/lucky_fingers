@@ -4,6 +4,7 @@ import { Input } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import {
   AuthContainer,
@@ -15,20 +16,27 @@ import {
   ButtonSec,
 } from "./LoginElements";
 import Footer from "../../Footer";
-import { setUserAuthenticated } from "../../../redux/auth/auth.actions";
+import { setUserAuthenticated, setUserMobnum } from "../../../redux/auth/auth.actions";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isAuthenticated } = useSelector((state) => ({
+    isAuthenticated: state.login.isAuthenticated,
+  }));
   const [isRecaptchaRequired, setRecaptchaRequired] = useState(true);
-  const [recaptchaToken, setRecaptchaToken] = useState('set to empty if want error message');
+  const [recaptchaToken, setRecaptchaToken] = useState(
+    "set to empty if want error message"
+  );
+  const [password, setPassword] = useState("");
+  const [mobNum, setMobnum] = useState("");
 
   const recapChangeHandler = () => {
     console("make continue btn enabled if verified successfully.");
   };
 
-  const {isAuthenticated} = useSelector((state) => ({
-    isAuthenticated: state.login.isAuthenticated,
-  }))
-  const dispatch = useDispatch();
+  
   const handleNumericKeyPress = (e) => {
     const charCode = e.charCode != null ? e.charCode : e.keyCode;
     const charString = String.fromCharCode(charCode);
@@ -40,21 +48,35 @@ const Login = () => {
 
   const recaptchaCall = () => {
     return (
-      <>
-        <RecaptchaContainer>
-          {!recaptchaToken && (
+      <RecaptchaContainer>
+        {!recaptchaToken && (
           <RecaptchaErrorContainer>
-              Please confirm you are human to continue.
-            </RecaptchaErrorContainer>
-          )}
-          <ReCAPTCHA
-            sitekey="site key"
-            onChange={recapChangeHandler}
-          />
-        </RecaptchaContainer>
-      </>
+            Please confirm you are human to continue.
+          </RecaptchaErrorContainer>
+        )}
+        <ReCAPTCHA sitekey="site key" onChange={recapChangeHandler} />
+      </RecaptchaContainer>
     );
   };
+
+  const handleMobChange = useCallback((e) => {
+    setMobnum(e.target.value);
+  }, []);
+
+  const handlePassChange = useCallback((e) => {
+    setPassword(e.target.value);
+  }, []);
+
+  const handleLogin = useCallback((e) => {
+    // 1. until api is not implemented, setting sessionStorage token and dispatching user number
+    // 2. setting isAuthenticated true as per that
+    dispatch(setUserMobnum(mobNum))
+
+    // set in local storge as well
+    dispatch(setUserAuthenticated(true))
+    // navigate to /profile
+    navigate("/profile");
+  }, [])
 
   return (
     <>
@@ -67,33 +89,44 @@ const Login = () => {
         </Header>
         <InputBoxes>
           <Input
+            name="usernum"
             placeholder="Mobile Number"
             prefix={<MobileOutlined />}
             onKeyPress={handleNumericKeyPress}
             maxLength={10}
             style={{ marginBottom: "1rem", height: "40px" }}
+            onChange={handleMobChange}
+            value={mobNum}
           />
           <Input
+            name="password"
             placeholder="Password"
             prefix={<KeyOutlined />}
             maxLength={12}
             style={{ marginBottom: "1rem", height: "40px" }}
+            onChange={handlePassChange}
+            value={password}
           />
-        </InputBoxes> 
+        </InputBoxes>
         {isRecaptchaRequired && recaptchaCall()}
-        <AuthLink to={"/login"}>
-          <Btn login={true} onClick={() => dispatch(setUserAuthenticated(!isAuthenticated))}>Continue</Btn>
-        </AuthLink>
+          <Btn
+            login="true"
+            disabled={!password || mobNum.length !== 10 }
+            onClick={handleLogin}
+            // onClick={() => dispatch(setUserAuthenticated(!isAuthenticated))}
+          >
+            Continue
+          </Btn>
         <ButtonSec>
           <AuthLink to={"/register"}>
-            <Btn login={false}>Register</Btn>
+            <Btn>Register</Btn>
           </AuthLink>
           <AuthLink to={"/reset-password"}>
-            <Btn login={false}>Forgot Password ?</Btn>
+            <Btn>Forgot Password ?</Btn>
           </AuthLink>
         </ButtonSec>
       </AuthContainer>
-      <Footer isAuthenticated={false} />
+      <Footer />
     </>
   );
 };

@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useCallback, useState} from "react";
 import { MobileOutlined, CodeOutlined, KeyOutlined } from "@ant-design/icons";
 import { Input } from "antd";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import {
   AuthContainer,
@@ -11,8 +13,16 @@ import {
   AuthLink,
 } from "./LoginElements";
 import Footer from "../../Footer";
+import { setUserAuthenticated } from "../../../redux/auth/auth.actions";
 
 const ForgotPassword = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [mobNum, setMobNum] = useState("");
+  const [verifCode, setVerifCode] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleNumericKeyPress = (e) => {
     const charCode = e.charCode != null ? e.charCode : e.keyCode;
     const charString = String.fromCharCode(charCode);
@@ -21,6 +31,23 @@ const ForgotPassword = (props) => {
       e.preventDefault();
     }
   };
+
+  const changeHandler = useCallback((inputBx, e) => {
+    if (inputBx === "mobileNum") {
+      setMobNum(e.target.value);
+    } else if (inputBx === "verifCode") {
+      setVerifCode(e.target.value);
+    } else {
+      setPassword(e.target.value);
+    }
+  }, []);
+
+  const handleForgotPassword = useCallback(() => {
+    // set in local storge as well
+    dispatch(setUserAuthenticated(true))
+    // navigate to /profile
+    navigate("/profile");
+  }, [])
 
   return (
     <>
@@ -38,6 +65,8 @@ const ForgotPassword = (props) => {
             onKeyPress={handleNumericKeyPress}
             maxLength={10}
             style={{ marginBottom: "1rem", height: "40px" }}
+            value={mobNum}
+            onChange={(e) => changeHandler("mobileNum", e)}
           />
           <Input
             placeholder="Verification Code"
@@ -45,22 +74,26 @@ const ForgotPassword = (props) => {
             onKeyPress={handleNumericKeyPress}
             maxLength={6}
             suffix={
-              <Btn otp={true} login={false}>
+              <Btn otp={true} login={false} disabled={!verifCode}>
                 OTP
               </Btn>
             }
             style={{ marginBottom: "1rem" }}
+            value={verifCode}
+            onChange={(e) => changeHandler("verifCode", e)}
           />
           <Input
             placeholder="New Password"
             prefix={<KeyOutlined />}
             maxLength={12}
             style={{ marginBottom: "1rem", height: "40px" }}
+            value={password}
+            onChange={(e) => changeHandler("password", e)}
           />
         </InputBoxes>
 
         <AuthLink to={"/reset-password"}>
-          <Btn otp={false}>Continue</Btn>
+          <Btn otp={false} disabled={!mobNum || !password || !verifCode} onClick={handleForgotPassword}>Continue</Btn>
         </AuthLink>
       </AuthContainer>
     </>
