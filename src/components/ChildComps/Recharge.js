@@ -5,16 +5,18 @@ import { WalletOutlined, MenuOutlined } from "@ant-design/icons";
 
 import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 import { Btn } from "../MyProfile/MyProfileElements";
+import razorpyaHook from "../../helpers/razorpyaHook";
 
 const Recharge = () => {
-  const [rechargeAmount, setRechargeAmount] = useState("");
+  const [rechargeAmount, setRechargeAmount] = useState(0);
+  
 
 //   const handleChange = useCallback((amount) => {
 //     setRechargeAmount(amount);
 //   }, []);
 
   const handleClick = useCallback((amt) => {
-    setRechargeAmount(amt);
+    setRechargeAmount(parseInt(amt));
   }, []);
 
   const renderOptions = (options) => {
@@ -55,6 +57,52 @@ const Recharge = () => {
     });
   };
 
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script')
+      script.src = src
+
+      script.onload = () => {
+        resolve(true)
+      }
+       script.onerror = () => {
+        resolve(false)
+       }
+
+       document.body.appendChild(script)
+    })
+  }
+
+  const displayRazorpay1 = async(amount) => {
+    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+
+    if (!res) {
+      alert("You are Offline! failed to load.")
+      return
+    }
+
+    const options = {
+      key: process.env.REACT_APP_RAZORPAY_TEST_ID,
+      currency: "INR",
+      amount: amount * 100,
+      name: "Lucky fingers",
+      description: "Thanks for the recharge!",
+
+      handler: function (response) {
+        alert(response.razorpay_payment_id)
+        alert("payment successful!")
+      },
+    }
+
+    const paymentObject = new window.Razorpay(options)
+    paymentObject.open();
+  }
+
+  const displayRazorpay = () => {
+    console.log(rechargeAmount, "recharge amount ")
+    razorpyaHook(rechargeAmount);
+  }
+
   return (
     <Container>
       <Header>
@@ -94,7 +142,8 @@ const Recharge = () => {
           </Row>
           {renderPaymentMethods()}
         </Info>
-        <PageButton>Recharge</PageButton>
+        {/* on click of this integrate payment api razorpay  */}
+        <PageButton onClick={() => displayRazorpay(rechargeAmount)} disabled={rechargeAmount === 0}>Recharge</PageButton>
       </ChildContainer>
     </Container>
   );

@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from "react";
-import { MobileOutlined, CodeOutlined, KeyOutlined } from "@ant-design/icons";
+import { MobileOutlined, CodeOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 import {
   AuthContainer,
@@ -14,40 +15,29 @@ import {
 } from "./LoginElements";
 import Footer from "../../Footer";
 import { setUserAuthenticated } from "../../../redux/auth/auth.actions";
+import { auth } from "../../../Firebase";
 
 const ForgotPassword = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [mobNum, setMobNum] = useState("");
-  const [verifCode, setVerifCode] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
-  const handleNumericKeyPress = (e) => {
-    const charCode = e.charCode != null ? e.charCode : e.keyCode;
-    const charString = String.fromCharCode(charCode);
-
-    if (!charString.match(/^[0-9\b]+$/)) {
-      e.preventDefault();
-    }
-  };
-
-  const changeHandler = useCallback((inputBx, e) => {
-    if (inputBx === "mobileNum") {
-      setMobNum(e.target.value);
-    } else if (inputBx === "verifCode") {
-      setVerifCode(e.target.value);
-    } else {
-      setPassword(e.target.value);
-    }
-  }, []);
+  const changeHandler = useCallback(e => {
+      setEmail(e.target.value);
+  }, [email]);
 
   const handleForgotPassword = useCallback(() => {
+    sendPasswordResetEmail(auth, email).then((res) => {
+      console.log(res, "res")
+    }).catch((err) => {
+      console.log(err, 'err')
+    })
     // set in local storge as well
     dispatch(setUserAuthenticated(true))
     // navigate to /profile
     navigate("/profile");
-  }, [])
+  }, [email])
 
   return (
     <>
@@ -55,45 +45,22 @@ const ForgotPassword = (props) => {
         <Header>
           <AuthLink to={props.isProfile ? "/profile" : "/login"}>
             <Icon />
-            <h1>Reset Password</h1>
+            <h1>Forgot Password</h1>
           </AuthLink>
         </Header>
         <InputBoxes>
           <Input
-            placeholder="Mobile Number"
-            prefix={<MobileOutlined />}
-            onKeyPress={handleNumericKeyPress}
-            maxLength={10}
+            placeholder="Email"
+            prefix={<MailOutlined />}
+            type="email"
             style={{ marginBottom: "1rem", height: "40px" }}
-            value={mobNum}
-            onChange={(e) => changeHandler("mobileNum", e)}
-          />
-          <Input
-            placeholder="Verification Code"
-            prefix={<CodeOutlined />}
-            onKeyPress={handleNumericKeyPress}
-            maxLength={6}
-            suffix={
-              <Btn otp={true} login={false} disabled={!verifCode}>
-                OTP
-              </Btn>
-            }
-            style={{ marginBottom: "1rem" }}
-            value={verifCode}
-            onChange={(e) => changeHandler("verifCode", e)}
-          />
-          <Input
-            placeholder="New Password"
-            prefix={<KeyOutlined />}
-            maxLength={12}
-            style={{ marginBottom: "1rem", height: "40px" }}
-            value={password}
-            onChange={(e) => changeHandler("password", e)}
+            value={email}
+            onChange={(e) => changeHandler(e)}
           />
         </InputBoxes>
 
-        <AuthLink to={"/reset-password"}>
-          <Btn otp={false} disabled={!mobNum || !password || !verifCode} onClick={handleForgotPassword}>Continue</Btn>
+        <AuthLink to={"/forgot-password"}>
+          <Btn otp={false} disabled={!email} onClick={handleForgotPassword}>Continue</Btn>
         </AuthLink>
       </AuthContainer>
     </>
