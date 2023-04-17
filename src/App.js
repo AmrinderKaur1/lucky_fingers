@@ -25,7 +25,7 @@ import AddSuggNComp from "./components/ChildComps/AddSuggNComp";
 import PrivacyPolicy from "./components/ChildComps/PrivacyPolicy";
 import Rda from "./components/ChildComps/Rda";
 import ProtectedRoute from "./ProtectedRoutes";
-import BetGame from "./components/Auth/Login/game";
+import BetGame from "./components/game";
 import store, {persistor} from "./store";
 
 
@@ -40,7 +40,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/reset-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path='/win' element={<BetGame />} />
@@ -91,9 +91,9 @@ function App() {
               element={<AddSuggNComp />}
             />
 
-            <Route path="/pages/person/privacy" element={<PrivacyPolicy />} />
             <Route path="/pages/person/risk" element={<Rda />} />
           </Route>
+          <Route path="/pages/person/privacy" element={<PrivacyPolicy />} />
         </Routes>
         {/* {!isAuthenticated && <Footer /> } */}
       </BrowserRouter>

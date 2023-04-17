@@ -5,7 +5,12 @@ export const setUserAuthenticated = (payload) => ({
     payload,
 })
 
-export const setUserMobnum = (payload) => ({
-    type: authActions.SET_USER_MOB_NUM,
+export const setUserEmail = (payload) => ({
+    type: authActions.SET_USER_EMAIL,
+    payload,
+})
+
+export const setUserContactNum = (payload) => ({
+    type: authActions.SET_USER_CONTACT_NUM,
     payload,
 })
