@@ -2,8 +2,6 @@ import React from 'react'
 
 const razorpyaHook = async(props) => {
 
-    console.log(props, "props   in hook")
-
     const amount = props;
     const loadScript = (src) => {
         return new Promise((resolve) => {

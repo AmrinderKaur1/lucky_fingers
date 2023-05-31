@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import { MobileOutlined, CodeOutlined, KeyOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { useDispatch } from "react-redux";
@@ -44,10 +44,10 @@ const ForgotPassword = (props) => {
 
   const handleForgotPassword = useCallback(() => {
     // set in local storge as well
-    dispatch(setUserAuthenticated(true))
+    dispatch(setUserAuthenticated(true));
     // navigate to /profile
     navigate("/profile");
-  }, [])
+  }, []);
 
   return (
     <>
@@ -93,7 +93,13 @@ const ForgotPassword = (props) => {
         </InputBoxes>
 
         <AuthLink to={"/forgot-password"}>
-          <Btn otp={false} disabled={!mobNum || !password || !verifCode} onClick={handleForgotPassword}>Continue</Btn>
+          <Btn
+            otp={false}
+            disabled={!mobNum || !password || !verifCode}
+            onClick={handleForgotPassword}
+          >
+            Continue
+          </Btn>
         </AuthLink>
       </AuthContainer>
     </>

@@ -53,7 +53,7 @@ export const Countdown = styled(Col)`
   text-align: right;
 `;
 export const HeadingCol = styled.p`
-  font-size: ${(props) => (props.size ? "1.2rem" : "0.8rem")};
+  font-size: ${(props) => (props.size ? "1.4rem" : "1rem")};
   font-weight: ${(props) => props.bold && "bolder"};
 `;
 export const BetDesBtns = styled.div`

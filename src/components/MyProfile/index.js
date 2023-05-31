@@ -29,6 +29,7 @@ import { setUserAuthenticated, setUserEmail } from "../../redux/auth/auth.action
 import Footer from "../Footer";
 import { signOut } from "firebase/auth";
 import { auth } from "../../Firebase";
+import { socket } from "../../Socket";
 
 const Profile = () => {
   const navigate = useNavigate();

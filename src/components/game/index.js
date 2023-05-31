@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Row, Col, Table, Modal } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Row, Col, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TrophyOutlined, ReconciliationOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -22,24 +22,14 @@ import {
   DividerZero,
   Rounds,
   RecordTable,
+  ModalHeading,
 } from "./GameElements";
 import { CardContainer, Btn } from "../MyProfile/MyProfileElements";
 import GameModal from "./GameModal";
 import { handleChangeModalVisibility } from "../../helpers/modals";
 import { playOptionButtons } from "../../helpers/heads";
+import { socket } from "../../Socket";
 
-const betValues = {
-  0: "green",
-  1: "blue",
-  2: "red",
-  3: "blue",
-  4: "red",
-  5: "green",
-  6: "red",
-  7: "blue",
-  8: "red",
-  9: "blue",
-};
 const { Column } = Table;
 const myParityValues = [];
 const parityValues = [
@@ -114,6 +104,25 @@ const parityValues = [
     result: ["red"],
   },
 ];
+
+const row1Options = [
+  { num: 0, clr: "green" },
+  { num: 1, clr: "blue" },
+  { num: 2, clr: "red" },
+  { num: 3, clr: "blue" },
+  { num: 4, clr: "red" },
+];
+
+const row2Options = [
+  { num: 5, clr: "green" },
+  { num: 6, clr: "red" },
+  { num: 7, clr: "blue" },
+  { num: 8, clr: "red" },
+  { num: 9, clr: "blue" },
+];
+
+const colorOptions = ["green", "blue", "red"];
+
 const BetGame = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -121,6 +130,53 @@ const BetGame = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalColor, setModalColor] = useState("");
   const [activeId, setActiveId] = useState(1);
+  const [randomNum, setRandomNum] = useState(0);
+  const [periodId, setPeriodId] = useState(0);
+  const [startCountdown, setStartCountdown] = useState(false);
+  const [showNumber, setShowNumber] = useState(false);
+  const [minutes, setMinutes] = useState(2);
+  const [seconds, setSeconds] = useState(30);
+  const [modalHeadingText, setModalHeadingText] = useState();
+
+  const [fooEvents, setFooEvents] = useState([]);
+
+  useEffect(() => {
+    let interval;
+    if (startCountdown) {
+      interval = setInterval(() => {
+        if (minutes === 0 && seconds === 0) {
+          console.log("ethe");
+          setShowNumber(true);
+          setStartCountdown(false);
+          setMinutes(2);
+          setSeconds(30);
+        } else if (seconds === 0) {
+          setMinutes((minutes) => minutes - 1);
+          setSeconds(59);
+        } else {
+          setSeconds((seconds) => seconds - 1);
+        }
+      }, [1000]);
+    }
+    return () => clearInterval(interval);
+  }, [startCountdown, minutes, seconds]);
+
+  // event listenerz`
+  useEffect(() => {
+    function onFooEvent(value) {
+      console.log(value);
+      setShowNumber(false);
+      setStartCountdown(true);
+      setRandomNum(value?.randomNumber);
+      setPeriodId(value?.id);
+      setFooEvents((previous) => [...previous, value]);
+    }
+    socket.on("api", onFooEvent);
+
+    return () => {
+      socket.off("api", onFooEvent);
+    };
+  }, []);
 
   const handleBtnRecharge = () => {
     navigate("/pages/person/recharge");
@@ -138,9 +194,21 @@ const BetGame = () => {
     setModalColor(clr);
   };
 
-  const activeHandler = (id) => {
-    setActiveId(id);
-  };
+  const handleClrOptionClick = useCallback(
+    (clr) => {
+      showModal(clr);
+      setModalHeadingText(`Join ${clr}`);
+    },
+    [modalHeadingText]
+  );
+
+  const handleNumberOptionClick = useCallback(
+    (clr, num) => {
+      showModal(clr);
+      setModalHeadingText(`Select ${num}`);
+    },
+    [modalHeadingText]
+  );
 
   return (
     <>
@@ -183,63 +251,72 @@ const BetGame = () => {
                   <TrophyOutlined />
                   &nbsp;Period <br />
                 </HeadingCol>
-                <HeadingCol size>20230209458</HeadingCol>
+                <HeadingCol bold>{periodId}</HeadingCol>
               </Period>
               <Countdown span={12}>
-                <HeadingCol>Count down</HeadingCol>
-                <HeadingCol size bold>
-                  02:12
-                </HeadingCol>
+                {startCountdown && (
+                  <>
+                    <HeadingCol>Count down</HeadingCol>
+                    <HeadingCol size bold>
+                      0{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                    </HeadingCol>
+                  </>
+                )}
+                {showNumber && (
+                  <>
+                    <HeadingCol>Bet Number</HeadingCol>
+                    <HeadingCol size bold>
+                      {randomNum}
+                    </HeadingCol>
+                  </>
+                )}
               </Countdown>
             </PeriodCountdown>
             <BetDesBtns>
-              <GameButton color={"green"} onClick={() => showModal("green")}>
-                Join Green
-              </GameButton>
-              <GameButton color={"blue"} onClick={() => showModal("blue")}>
-                Join Blue
-              </GameButton>
-              <GameButton color={"red"} onClick={() => showModal("red")}>
-                Join Red
-              </GameButton>
+              {colorOptions.map((clr) => {
+                return (
+                  <GameButton
+                    color={clr}
+                    onClick={() => handleClrOptionClick(clr)}
+                    disabled={startCountdown}
+                  >
+                    Join {clr}
+                  </GameButton>
+                );
+              })}
             </BetDesBtns>
-            {/* {renderButtonRows()} */}
             <BetButtonsRow>
-              <GameButton childBtns color={"green"}>
-                0
-              </GameButton>
-              <GameButton childBtns color={"blue"}>
-                1
-              </GameButton>
-              <GameButton childBtns color={"red"}>
-                2
-              </GameButton>
-              <GameButton childBtns color={"blue"}>
-                3
-              </GameButton>
-              <GameButton childBtns color={"red"}>
-                4
-              </GameButton>
+              {row1Options.map((el) => {
+                return (
+                  <GameButton
+                    childBtns
+                    color={el?.clr}
+                    onClick={() => handleNumberOptionClick(el?.clr, el?.num)}
+                    disabled={startCountdown}
+                  >
+                    {el?.num}
+                  </GameButton>
+                );
+              })}
             </BetButtonsRow>
             <BetButtonsRow>
-              <GameButton childBtns color={"green"}>
-                5
-              </GameButton>
-              <GameButton childBtns color={"red"}>
-                6
-              </GameButton>
-              <GameButton childBtns color={"blue"}>
-                7
-              </GameButton>
-              <GameButton childBtns color={"red"}>
-                8
-              </GameButton>
-              <GameButton childBtns color={"blue"}>
-                9
-              </GameButton>
+              {row2Options.map((el) => {
+                return (
+                  <GameButton
+                    childBtns
+                    color={el?.clr}
+                    onClick={() => handleNumberOptionClick(el?.clr, el?.num)}
+                    disabled={startCountdown}
+                  >
+                    {el?.num}
+                  </GameButton>
+                );
+              })}
             </BetButtonsRow>
           </DisplayGame>
         </MainContainer>
+
+        {/* parity record  */}
         <ParityRecordCont>
           <PlayOptionHeader>
             <div>
@@ -320,7 +397,9 @@ const BetGame = () => {
             />
           </RecordTable>
         </ParityRecordCont>
-        {isModalOpen && <GameModal color={modalColor} />}
+        {isModalOpen && (
+          <GameModal color={modalColor} heading={modalHeadingText} />
+        )}
       </GameContainer>
       <Footer />
     </>

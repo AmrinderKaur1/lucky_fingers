@@ -1,6 +1,6 @@
 import * as modalActions from './modals.constants'
 
-const modalInitialState = {
+export const modalInitialState = {
     isJoinGreenVisible: false,
     isJoinBlueVisible: false,
     isJoinRedVisible: false,

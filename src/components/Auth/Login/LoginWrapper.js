@@ -23,6 +23,7 @@ import {
   setUserEmail,
 } from "../../../redux/auth/auth.actions";
 import { auth } from "../../../Firebase";
+import { socket } from "../../../Socket";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -55,6 +56,8 @@ const Login = () => {
         .then((res) => {
           dispatch(setUserAuthenticated(true));
           dispatch(setUserEmail(res.user.email));
+          // connect to socket.io 
+          socket.connect();
           // navigate to /profile
           navigate("/profile");
         })

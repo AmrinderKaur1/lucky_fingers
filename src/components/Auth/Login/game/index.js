@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Row, Col, Table, Modal } from "antd";
+import React, { useState } from "react";
+import { Row, Col, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TrophyOutlined, ReconciliationOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";

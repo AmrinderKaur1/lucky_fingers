@@ -18,7 +18,7 @@ import { DividerZero } from "./GameElements";
 import { useDispatch, useSelector } from "react-redux";
 import { handleChangeModalVisibility } from "../../helpers/modals";
 
-const GameModal = ({ color }) => {
+const GameModal = ({ color, heading }) => {
   const dispatch = useDispatch();
   const { isJoinGreenVisible, isJoinBlueVisible, isJoinRedVisible } = useSelector((state) => ({
     isJoinGreenVisible: state.modalStates.isJoinGreenVisible,
@@ -70,8 +70,9 @@ const GameModal = ({ color }) => {
       footer={false}
       destroyOnClose={true}
       className={modalName}
+      heading={heading}
     >
-      <ModalHeading color={color}>Join {color}</ModalHeading>
+      <ModalHeading color={color}>{heading}</ModalHeading>
       <ModalContent>
         <p>Contract Money</p>
         <ContractLengthOptions>
