@@ -145,7 +145,6 @@ const BetGame = () => {
     if (startCountdown) {
       interval = setInterval(() => {
         if (minutes === 0 && seconds === 0) {
-          console.log("ethe");
           setShowNumber(true);
           setStartCountdown(false);
           setMinutes(2);
