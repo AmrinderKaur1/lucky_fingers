@@ -34,11 +34,11 @@ export const PlayOption = styled.p`
   cursor: pointer;
 
   &.active {
-    font-weight: 600; 
+    font-weight: 600;
     /* underline  */
     border-color: black;
     border-bottom-style: solid;
-   }
+  }
 `;
 export const DisplayGame = styled.div`
   background-color: #fefbfb;
@@ -160,6 +160,23 @@ export const ContractLengthOptions = styled.div`
     padding: 0 9px;
     border-bottom: 1px solid;
     margin: 0 8px;
+  }
+`;
+
+export const DefaultPaymentOptions = styled.p`
+  height: 38px;
+  display: inline-block;
+  line-height: 45px;
+  margin: 0 5px;
+  padding: 0 10px 15px 10px;
+
+  &.active {
+    /* underline  */
+    border-bottom-style: solid;
+    border-bottom-width: 3.1px;
+    width: fit-content;
+    border-color: ${(props) =>
+      props.clr === "red" ? "red" : props.clr === "green" ? "green" : "blue"};
   }
 `;
 
