@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Recaptcha from "react-recaptcha";
+import axios from "axios";
 
 import {
   AuthContainer,
@@ -24,6 +25,7 @@ import {
 } from "../../../redux/auth/auth.actions";
 import { auth } from "../../../Firebase";
 import { socket } from "../../../Socket";
+import { setAuthToken } from "../../../helpers/heads";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -52,18 +54,40 @@ const Login = () => {
 
   const handleLogin = useCallback(
     async(e) => {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((res) => {
+      // /login
+      axios.post('http://localhost:4000/api/users/login', {
+        email, 
+        password
+      }).then((res) => {
+        console.log('in then', res)
+        if (res?.data?.success) {
           dispatch(setUserAuthenticated(true));
-          dispatch(setUserEmail(res.user.email));
+          dispatch(setUserEmail(email));
           // connect to socket.io 
           socket.connect();
           // navigate to /profile
           navigate("/profile");
-        })
-        .catch((error) => {
-          setShowLoginErr(true);
-        });
+          // set auth token
+          localStorage.setItem("jwtToken", res?.data?.token);
+        }
+      })
+      .catch(() => {
+        console.log("in catchs")
+        setShowLoginErr(true);
+      })
+
+      // signInWithEmailAndPassword(auth, email, password)
+      //   .then((res) => {
+      //     dispatch(setUserAuthenticated(true));
+      //     dispatch(setUserEmail(res.user.email));
+      //     // connect to socket.io 
+      //     socket.connect();
+      //     // navigate to /profile
+      //     navigate("/profile");
+      //   })
+      //   .catch((error) => {
+      //     setShowLoginErr(true);
+      //   });
     },
     [email, password]
   );

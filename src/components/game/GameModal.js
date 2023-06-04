@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleChangeModalVisibility } from "../../helpers/modals";
 import axios from "axios";
 
-const GameModal = ({ color, heading }) => {
+const GameModal = ({ color, heading, periodId, randomNum, selectedNum }) => {
   const dispatch = useDispatch();
   const { isJoinGreenVisible, isJoinBlueVisible, isJoinRedVisible } =
     useSelector((state) => ({
@@ -40,28 +40,47 @@ const GameModal = ({ color, heading }) => {
       ? "isJoinBlueVisible"
       : "isJoinRedVisible";
 
+  const getInvestmentTimes = () => {
+
+    // 1. SELECT NUMBER, if the result is the same as the number you selected
+    // you will get (92 times of Investment)
+
+    // 2. JOIN GREEN, if the result shows 0,5, you will get (5 times of Investment)
+
+    // 3. JOIN RED, if the result shows 2,4,6,8, you will get (2.5 times of Investment)
+
+    // 4. JOIN BLUE, if the result shows 1,3,7,9, you will get (2.5 times of Investment)
+
+    if (randomNum === selectedNum) {
+      return 92
+    } else if (color?.toLowerCase() === 'green' && [0, 5].includes(randomNum)) {
+      return 5
+    } else if (color?.toLowerCase() === 'red' && [2, 4, 6, 8].includes(randomNum)) {
+      return 2.5
+    } else if (color?.toLowerCase() === 'blue' && [1, 3, 7, 9].includes(randomNum)) {
+      return 2.5
+    }
+  };
+
   const handleOk = () => {
     const params = {
-      periodId: "",
+      periodId,
       userEmail: "sapifeb446@oniecan.com",
-      luckyDrawNum: 0,
-      amount: 0,
-      selectedNum: 3,
-      selectedClr: "",
+      luckyDrawNum: randomNum,
+      amount: defaultAmtSelected,
+      selectedNum: selectedNum ?? -1,
+      selectedClr: color,
       timeStamp: "22",
-      status: "lost",
-      amountMultipliedBy: 2,
+      status: randomNum === selectedNum ?? -1 ? "won" : "lost",
+      amountMultipliedBy: getInvestmentTimes(),
     };
-    console.log(
-      "Bearer " + localStorage.getItem("authToken"),
-      "'Bearer '+ localStorage.getItem('authToken')"
-    );
+
+    console.log(localStorage?.jwtToken, 'localStorage?.jwtToken')
     axios
       .post("http://localhost:4000/game/bet-period", params, {
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0N2JlYzFkZTg5MDU0ZDRiMjQ3MjgxNCIsImVtYWlsIjoic2FwaWZlYjQ0NkBvbmllY2FuLmNvbSIsImlhdCI6MTY4NTg0Mjk5OCwiZXhwIjoxNjg1ODQ2NTk4fQ.dT4jEf5ViL9TSKKt03PH2U0kpjgrmkV3UMckzHe_dFU",
+          Authorization: localStorage?.jwtToken,
         },
       })
       .then((res) => {

@@ -137,6 +137,7 @@ const BetGame = () => {
   const [minutes, setMinutes] = useState(2);
   const [seconds, setSeconds] = useState(30);
   const [modalHeadingText, setModalHeadingText] = useState();
+  const [selectedNum, setSelectedNum] = useState(undefined)
 
   const [fooEvents, setFooEvents] = useState([]);
 
@@ -181,7 +182,7 @@ const BetGame = () => {
     navigate("/pages/person/recharge");
   };
 
-  const showModal = (clr) => {
+  const showModal = (clr, num) => {
     const modalName =
       clr === "green"
         ? "isJoinGreenVisible"
@@ -191,6 +192,7 @@ const BetGame = () => {
     handleChangeModalVisibility(true, modalName, dispatch);
     setIsModalOpen(true);
     setModalColor(clr);
+    setSelectedNum(num);
   };
 
   const handleClrOptionClick = useCallback(
@@ -203,7 +205,7 @@ const BetGame = () => {
 
   const handleNumberOptionClick = useCallback(
     (clr, num) => {
-      showModal(clr);
+      showModal(clr, num);
       setModalHeadingText(`Select ${num}`);
     },
     [modalHeadingText]
@@ -277,7 +279,7 @@ const BetGame = () => {
                   <GameButton
                     color={clr}
                     onClick={() => handleClrOptionClick(clr)}
-                    disabled={startCountdown}
+                    disabled={!startCountdown}
                   >
                     Join {clr}
                   </GameButton>
@@ -291,7 +293,7 @@ const BetGame = () => {
                     childBtns
                     color={el?.clr}
                     onClick={() => handleNumberOptionClick(el?.clr, el?.num)}
-                    disabled={startCountdown}
+                    disabled={!startCountdown}
                   >
                     {el?.num}
                   </GameButton>
@@ -305,7 +307,7 @@ const BetGame = () => {
                     childBtns
                     color={el?.clr}
                     onClick={() => handleNumberOptionClick(el?.clr, el?.num)}
-                    disabled={startCountdown}
+                    disabled={!startCountdown}
                   >
                     {el?.num}
                   </GameButton>
@@ -397,7 +399,13 @@ const BetGame = () => {
           </RecordTable>
         </ParityRecordCont>
         {isModalOpen && (
-          <GameModal color={modalColor} heading={modalHeadingText} />
+          <GameModal
+            color={modalColor}
+            heading={modalHeadingText}
+            periodId={periodId}
+            randomNum={randomNum}
+            numSelected={selectedNum}
+          />
         )}
       </GameContainer>
       <Footer />

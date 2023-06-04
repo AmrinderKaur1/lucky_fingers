@@ -256,14 +256,17 @@ const Profile = () => {
   };
 
   const handleLogout = useCallback(() => {
-    signOut(auth).then(() => {
-      console.log("signed out")
-      dispatch(setUserAuthenticated(false))
-      dispatch(setUserEmail(""))
-      navigate("/login");
-    }).catch((err) => {
-      console.log(err, "error logging out")
-    })
+    dispatch(setUserAuthenticated(false))
+
+    // firebase - logout
+    // signOut(auth).then(() => {
+    //   console.log("signed out")
+    //   dispatch(setUserAuthenticated(false))
+    //   dispatch(setUserEmail(""))
+    //   navigate("/login");
+    // }).catch((err) => {
+    //   console.log(err, "error logging out")
+    // })
   }, []);
 
   return (

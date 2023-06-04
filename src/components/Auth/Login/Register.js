@@ -31,6 +31,7 @@ import {
   setUserContactNum,
 } from "../../../redux/auth/auth.actions";
 import { auth } from "../../../Firebase";
+import axios from "axios";
 
 export const handleNumericKeyPress = (e) => {
   const charCode = e.charCode != null ? e.charCode : e.keyCode;
@@ -78,27 +79,44 @@ const Register = () => {
   );
 
   const handleRegister = useCallback(() => {
-    createUserWithEmailAndPassword(auth, email, password)
+    axios
+      .post("http://localhost:4000/api/users/register", {
+        email,
+        password,
+        mobileNum,
+      })
       .then((res) => {
         dispatch(setUserAuthenticated(true));
         dispatch(setUserContactNum(mobileNum));
         dispatch(setUserEmail(email));
         // navigate to /profile
         navigate("/profile");
-        console.log(res, "res")
       })
       .catch((error) => {
-        // if user or email already exists        
-        setAuthError(true)
-        const err = JSON.stringify(error)
-        console.log(typeof error, "type of err" ,  JSON.stringify(error))
-        if (err.includes('auth/email-already-in-use')) {
-          // email already exists, try different one, or if login instead!
-          setResCode(400)
-        } else {
-          setResCode(422)
-        }
+        setAuthError(true);
       });
+
+    // createUserWithEmailAndPassword(auth, email, password)
+    //   .then((res) => {
+    //     dispatch(setUserAuthenticated(true));
+    //     dispatch(setUserContactNum(mobileNum));
+    //     dispatch(setUserEmail(email));
+    //     // navigate to /profile
+    //     navigate("/profile");
+    //     console.log(res, "res")
+    //   })
+    //   .catch((error) => {
+    //     // if user or email already exists
+    //     setAuthError(true)
+    //     const err = JSON.stringify(error)
+    //     console.log(typeof error, "type of err" ,  JSON.stringify(error))
+    //     if (err.includes('auth/email-already-in-use')) {
+    //       // email already exists, try different one, or if login instead!
+    //       setResCode(400)
+    //     } else {
+    //       setResCode(422)
+    //     }
+    //   });
   }, [email, password]);
 
   useEffect(() => {
@@ -170,8 +188,15 @@ const Register = () => {
     setPassError(false);
   }, [passError]);
 
-  function checkDisabled () {
-    return !(mobileNum.length === 10 && password.length >= 8 && password === confirmPass && email && isAgreed && !isAuthError)
+  function checkDisabled() {
+    return !(
+      mobileNum.length === 10 &&
+      password.length >= 8 &&
+      password === confirmPass &&
+      email &&
+      isAgreed &&
+      !isAuthError
+    );
   }
 
   return (
@@ -218,7 +243,9 @@ const Register = () => {
             onFocus={handlePassFocus}
           />
           <Error error={passError}>
-            {password.length < 8 && passError ? 'Password must be between 8 and 32 characters' : ""}
+            {password.length < 8 && passError
+              ? "Password must be between 8 and 32 characters"
+              : ""}
           </Error>
           <PasswordInput
             placeholder="Confirm Password"
@@ -234,7 +261,9 @@ const Register = () => {
             onFocus={handleConfirmPassFocus}
           />
           <Error error={confirmPassError}>
-            {password !== confirmPass && confirmPassError ? 'Passwords must be the same.' : ""}
+            {password !== confirmPass && confirmPassError
+              ? "Passwords must be the same."
+              : ""}
           </Error>
           <CheckBx onChange={onChange} value={isAgreed}>
             I agree &nbsp;
@@ -243,24 +272,24 @@ const Register = () => {
             </AuthLink>
           </CheckBx>
         </InputBoxes>
-        {isAuthError && <AuthError>
-          {resCode === 400 ? 
-          <>
-          Email already exists, try different one, or &nbsp;
-            <AuthLink to={"/login"}>
-              <a href="" >LOGIN</a>
-            </AuthLink> &nbsp;
-           instead! </> : 
-           'Error while Registering, please try again or check your credentials !'
-          }
-        </AuthError> }
+        {isAuthError && (
+          <AuthError>
+            {resCode === 400 ? (
+              <>
+                Email already exists, try different one, or &nbsp;
+                <AuthLink to={"/login"}>
+                  <a href="">LOGIN</a>
+                </AuthLink>{" "}
+                &nbsp; instead!{" "}
+              </>
+            ) : (
+              "Error while Registering, please try again or check your credentials !"
+            )}
+          </AuthError>
+        )}
 
         <AuthLink to={"/register"}>
-          <Btn
-            otp={false}
-            disabled={checkDisabled()}
-            onClick={handleRegister}
-          >
+          <Btn otp={false} disabled={checkDisabled()} onClick={handleRegister}>
             Register
           </Btn>
         </AuthLink>
