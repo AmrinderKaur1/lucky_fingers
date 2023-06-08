@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Table } from "antd";
+import { Row, Col, Table, Pagination } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TrophyOutlined, ReconciliationOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -29,6 +29,8 @@ import GameModal from "./GameModal";
 import { handleChangeModalVisibility } from "../../helpers/modals";
 import { playOptionButtons } from "../../helpers/heads";
 import { socket } from "../../Socket";
+import axios from "axios";
+import { setParityRecord, setTotalPeriodData } from "../../redux/game/game.actions";
 
 const { Column } = Table;
 const myParityValues = [];
@@ -112,6 +114,7 @@ const row1Options = [
   { num: 3, clr: "blue" },
   { num: 4, clr: "red" },
 ];
+const limit = 10;
 
 const row2Options = [
   { num: 5, clr: "green" },
@@ -137,7 +140,9 @@ const BetGame = () => {
   const [minutes, setMinutes] = useState(2);
   const [seconds, setSeconds] = useState(30);
   const [modalHeadingText, setModalHeadingText] = useState();
-  const [selectedNum, setSelectedNum] = useState(undefined)
+  const [selectedNum, setSelectedNum] = useState(undefined);
+  const [offset, setOffset] = useState(0);
+  const [maxPages, setMaxPages] = useState(1)
 
   const [fooEvents, setFooEvents] = useState([]);
 
@@ -211,6 +216,31 @@ const BetGame = () => {
     [modalHeadingText]
   );
 
+  useEffect(() => {
+    axios.get('http://localhost:4000/game/getAllPeriodRecords', {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage?.jwtToken,
+      }
+    }).then((res) => {
+      if (res?.data) {
+        const div = 19 / limit
+        div > Math.floor(div) ? setMaxPages(Math.floor(div) + 1) : setMaxPages(div)
+        dispatch(setTotalPeriodData(res?.data?.totalLen))
+        dispatch(setParityRecord(res?.data?.periodsList));
+      }
+      console.log(res, '99999999999999')
+    }).catch((err) => {
+      console.log(err, 'err')
+    })
+  }, [offset, fooEvents])
+
+  const handlePageChange = (page) => {
+    const offsetVal = page * (page -1) * 10 // limit = 10 here
+    setOffset(offsetVal)
+    // call api to get data as soon as offset changes
+  }
+
   return (
     <>
       <GameContainer>
@@ -233,17 +263,7 @@ const BetGame = () => {
         {/* game and parity  */}
         <MainContainer>
           <PlayOptionHeader>
-            {playOptionButtons.map((element, index) => {
-              return (
-                <PlayOption
-                  onClick={() => setActiveId(element.id)}
-                  className={element.id === activeId ? "active" : ""}
-                  key={index}
-                >
-                  {element.name}
-                </PlayOption>
-              );
-            })}
+            <PlayOption className="active">Parity</PlayOption>
           </PlayOptionHeader>
           <DisplayGame>
             <PeriodCountdown>
@@ -328,13 +348,7 @@ const BetGame = () => {
           <DividerZero />
           <RecordTable
             dataSource={parityValues}
-            pagination={{
-              size: "small",
-              simple: true,
-              defaultCurrent: 10,
-              defaultPageSize: 10,
-              total: 100,
-            }}
+            pagination={false}
           >
             <Column title="Period" dataIndex="period" key="period" />
             <Column title="Price" dataIndex="price" key="price" />
@@ -352,10 +366,11 @@ const BetGame = () => {
                       &nbsp;
                     </>
                   ))}
-                </>
+                </>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
               )}
             />
           </RecordTable>
+          <Pagination simple defaultCurrent={1} onChange={handlePageChange} total={maxPages*10}/>
         </ParityRecordCont>
 
         {/* my parity record  */}
