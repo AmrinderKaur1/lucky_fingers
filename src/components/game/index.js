@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Table, Pagination } from "antd";
+import { Row, Col, Table, Popover } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TrophyOutlined, ReconciliationOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Footer from "../Footer";
 import {
@@ -22,90 +22,21 @@ import {
   DividerZero,
   Rounds,
   RecordTable,
-  ModalHeading,
+  StyledPagination,
 } from "./GameElements";
 import { CardContainer, Btn } from "../MyProfile/MyProfileElements";
 import GameModal from "./GameModal";
 import { handleChangeModalVisibility } from "../../helpers/modals";
-import { playOptionButtons } from "../../helpers/heads";
+import { numMappedToClr, playOptionButtons } from "../../helpers/heads";
 import { socket } from "../../Socket";
 import axios from "axios";
-import { setParityRecord, setTotalPeriodData } from "../../redux/game/game.actions";
+import {
+  setTotalPeriodData,
+  getParityRecord,
+  getUserParityRecord,
+} from "../../redux/game/game.actions";
 
 const { Column } = Table;
-const myParityValues = [];
-const parityValues = [
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["red", "green"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["red", "red"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["green"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["red", "green"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["blue"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["green"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["red", "blue"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["blue", "green"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["red"],
-  },
-  {
-    key: "1",
-    period: "20200202093939",
-    price: "37384",
-    number: "2",
-    result: ["red"],
-  },
-];
 
 const row1Options = [
   { num: 0, clr: "green" },
@@ -130,9 +61,25 @@ const BetGame = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { parityRecordData, totalPeriodData, userEmail, myParityRecord } =
+    useSelector((state) => ({
+      parityRecordData: state.game.parityRecordData,
+      totalPeriodData: state.game.totalPeriodData,
+      userEmail: state.login.userEmail,
+      myParityRecord: state.game.myParityRecord,
+    }));
+
+  const div = totalPeriodData / limit;
+  const maxPagesTotalParity = div > Math.floor(div) ? Math.floor(div) + 1 : div;
+
+  const myParityRecordDivisor = myParityRecord?.length / limit;
+  const maxPagesMyParity =
+    myParityRecordDivisor > Math.floor(myParityRecordDivisor)
+      ? Math.floor(myParityRecordDivisor) + 1
+      : myParityRecordDivisor;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalColor, setModalColor] = useState("");
-  const [activeId, setActiveId] = useState(1);
   const [randomNum, setRandomNum] = useState(0);
   const [periodId, setPeriodId] = useState(0);
   const [startCountdown, setStartCountdown] = useState(false);
@@ -141,8 +88,9 @@ const BetGame = () => {
   const [seconds, setSeconds] = useState(30);
   const [modalHeadingText, setModalHeadingText] = useState();
   const [selectedNum, setSelectedNum] = useState(undefined);
-  const [offset, setOffset] = useState(0);
-  const [maxPages, setMaxPages] = useState(1)
+  const [myParityDataSrc, setMyParityDataSrc] = useState(
+    myParityRecord?.slice(0, limit)
+  );
 
   const [fooEvents, setFooEvents] = useState([]);
 
@@ -155,6 +103,27 @@ const BetGame = () => {
           setStartCountdown(false);
           setMinutes(2);
           setSeconds(30);
+          // call api to update parity record
+          dispatch(
+            getParityRecord(
+              "http://localhost:4000/game/getAllPeriodRecords",
+              { offset: 0, limit },
+              {
+                "Content-Type": "application/json",
+                Authorization: localStorage?.jwtToken,
+              }
+            )
+          );
+          dispatch(
+            getUserParityRecord(
+              `http://localhost:4000/game/getCurrentUserParityRecord`,
+              { offset: 0, limit, userEmail },
+              {
+                "Content-Type": "application/json",
+                Authorization: localStorage?.jwtToken,
+              }
+            )
+          );
         } else if (seconds === 0) {
           setMinutes((minutes) => minutes - 1);
           setSeconds(59);
@@ -216,30 +185,50 @@ const BetGame = () => {
     [modalHeadingText]
   );
 
-  useEffect(() => {
-    axios.get('http://localhost:4000/game/getAllPeriodRecords', {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage?.jwtToken,
-      }
-    }).then((res) => {
-      if (res?.data) {
-        const div = 19 / limit
-        div > Math.floor(div) ? setMaxPages(Math.floor(div) + 1) : setMaxPages(div)
-        dispatch(setTotalPeriodData(res?.data?.totalLen))
-        dispatch(setParityRecord(res?.data?.periodsList));
-      }
-      console.log(res, '99999999999999')
-    }).catch((err) => {
-      console.log(err, 'err')
-    })
-  }, [offset, fooEvents])
+  const handlePageChange = (page, tableName) => {
+    const offsetVal = (page - 1) * 10; // limit = 10 here
 
-  const handlePageChange = (page) => {
-    const offsetVal = page * (page -1) * 10 // limit = 10 here
-    setOffset(offsetVal)
-    // call api to get data as soon as offset changes
-  }
+    const params = {
+      offset: offsetVal,
+      limit,
+    };
+
+    if (tableName === "parityRec") {
+      dispatch(
+        getParityRecord(
+          "http://localhost:4000/game/getAllPeriodRecords",
+          params,
+          {
+            "Content-Type": "application/json",
+            Authorization: localStorage?.jwtToken,
+          }
+        )
+      );
+    } else {
+      setMyParityDataSrc(myParityRecord?.slice(offsetVal, limit * page));
+    }
+  };
+
+  const getDataSource = () => {
+    const parityDataSrc = parityRecordData?.length
+      ? parityRecordData?.map((el) => {
+          return {
+            period: el?.periodId,
+            price: el?.totalBetAmt,
+            number: el?.luckyDrawNum,
+            color: numMappedToClr[el?.luckyDrawNum],
+          };
+        })
+      : [];
+    return parityDataSrc;
+  };
+
+  console.log(myParityRecord, "myParityRecord");
+
+  const getMyParityDataSrc = () => {
+    console.log(myParityRecord, "myParityRecord");
+    return [];
+  };
 
   return (
     <>
@@ -346,31 +335,35 @@ const BetGame = () => {
             </div>
           </PlayOptionHeader>
           <DividerZero />
-          <RecordTable
-            dataSource={parityValues}
-            pagination={false}
-          >
-            <Column title="Period" dataIndex="period" key="period" />
+          <RecordTable dataSource={getDataSource()} pagination={false}>
+            <Column
+              title="Period"
+              dataIndex="period"
+              key="period"
+              render={(val) => {
+                return (
+                  <Popover content={val} placement="leftTop">
+                    .... {val?.slice(val?.length - 4, val?.length)}
+                  </Popover>
+                );
+              }}
+            />
             <Column title="Price" dataIndex="price" key="price" />
             <Column title="Number" dataIndex="number" key="number" />
             <Column
               className="result-column"
               title="Result"
-              dataIndex="result"
-              key="result"
-              render={(result) => (
-                <>
-                  {result.map((res) => (
-                    <>
-                      <Rounds key={res} color={res} />
-                      &nbsp;
-                    </>
-                  ))}
-                </>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-              )}
+              dataIndex="color"
+              key="color"
+              render={(result) => <Rounds key={result} color={result} />}
             />
           </RecordTable>
-          <Pagination simple defaultCurrent={1} onChange={handlePageChange} total={maxPages*10}/>
+          <StyledPagination
+            simple
+            defaultCurrent={1}
+            onChange={(page) => handlePageChange(page, "parityRec")}
+            total={maxPagesTotalParity * 10}
+          />
         </ParityRecordCont>
 
         {/* my parity record  */}
@@ -382,36 +375,58 @@ const BetGame = () => {
             </div>
           </PlayOptionHeader>
           <DividerZero />
-          <RecordTable
-            dataSource={myParityValues}
-            pagination={{
-              size: "small",
-              simple: true,
-              defaultCurrent: 10,
-              defaultPageSize: 10,
-              total: 100,
-            }}
-          >
-            <Column title="Period" dataIndex="period" key="period" />
-            <Column title="Price" dataIndex="price" key="price" />
-            <Column title="Number" dataIndex="number" key="number" />
+          <RecordTable dataSource={myParityDataSrc} pagination={false}>
             <Column
+              title="Period"
+              dataIndex="periodId"
+              key="periodId"
+              render={(data) => {
+                return (
+                  <Popover content={data} placement="leftTop">
+                    .... {data.slice(data?.length - 4, data?.length)}
+                  </Popover>
+                );
+              }}
+            />
+            <Column title="Price" dataIndex="amount" key="amount" />
+            <Column
+              title="Bet"
+              dataIndex="selectedNum"
               className="result-column"
-              title="Result"
-              dataIndex="result"
-              key="result"
-              render={(result) => (
-                <>
-                  {result.map((res) => (
-                    <>
-                      <Rounds key={res} color={res} />
-                      &nbsp;
-                    </>
-                  ))}
-                </>
-              )}
+              key="selectedNum"
+              render={(selectedNum, dataElt) => {
+                return dataElt?.selectedClr ? (
+                  <Rounds
+                    key={dataElt?.selectedClr}
+                    color={dataElt?.selectedClr}
+                  />
+                ) : (
+                  <>{selectedNum}</>
+                );
+              }}
+            />
+            <Column
+              title="Won"
+              dataIndex="amountMultipliedBy"
+              key="amountMultipliedBy"
+              render={(data, dataElt) => {
+                return (
+                  <>
+                    {data}*{dataElt?.amount} ={" "}
+                    <span style={{ color: "#75d175" }}>(</span>
+                    {data * dataElt?.amount}
+                    <span style={{ color: "#75d175" }}>)</span>
+                  </>
+                );
+              }}
             />
           </RecordTable>
+          <StyledPagination
+            simple
+            defaultCurrent={1}
+            onChange={(page) => handlePageChange(page, "myParity")}
+            total={maxPagesMyParity * 10}
+          />
         </ParityRecordCont>
         {isModalOpen && (
           <GameModal

@@ -10,6 +10,7 @@ import createMigrate from "redux-persist/es/createMigrate";
 
 import { authInitialState } from "./redux/auth/auth.reducer";
 import { modalInitialState } from "./redux/modals/modals.reducer";
+import { gameInitialState } from "./redux/game/game.reducer";
 
 const MIGRATION_DEBUG = false;
 
@@ -26,13 +27,19 @@ const migrations = {
       modalStates: modalInitialState,
     };
   },
+  2: (state) => {
+    return {
+      ...state,
+      game: gameInitialState,
+    };
+  },
 };
 
 const persistConfig = {
   key: "root",
   storage: sessionStorage,
   migrate: createMigrate(migrations, { debug: MIGRATION_DEBUG }),
-  whiteList: ["auth", "modalStates"],
+  whiteList: ["auth", "modalStates", "game"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

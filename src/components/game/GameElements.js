@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Col, Row, Button, Divider, Table, Modal, Input } from "antd";
+import { Col, Row, Button, Divider, Table, Modal, Input, Pagination } from "antd";
 
 export const GameContainer = styled.div`
   margin-bottom: 44px;
@@ -245,4 +245,9 @@ export const CustomModalFooter = styled.div`
   display: flex;
   justify-content: end;
   padding: 12px 20px;
+`;
+
+export const StyledPagination = styled(Pagination)`
+  text-align: end;
+  padding: 11px;
 `;

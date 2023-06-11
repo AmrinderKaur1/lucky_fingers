@@ -1,5 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { MobileOutlined, KeyOutlined, MailOutlined, EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+import {
+  KeyOutlined,
+  MailOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+} from "@ant-design/icons";
 import { Input } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 import styled from "styled-components";
@@ -23,9 +28,11 @@ import {
   setUserAuthenticated,
   setUserEmail,
 } from "../../../redux/auth/auth.actions";
-import { auth } from "../../../Firebase";
 import { socket } from "../../../Socket";
-import { setAuthToken } from "../../../helpers/heads";
+import {
+  getParityRecord,
+  getUserParityRecord,
+} from "../../../redux/game/game.actions";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,50 +44,77 @@ const Login = () => {
   const [isPwVisible, setPwVisible] = useState(false);
 
   const [isRecaptchaRequired, setRecaptchaRequired] = useState(true);
-  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const recapChangeHandler = () => {
     console("make continue btn enabled if verified successfully.");
   };
 
-  const handleEmailChange = useCallback((e) => {
-    setMobnum(e.target.value);
-  }, [email]);
+  const handleEmailChange = useCallback(
+    (e) => {
+      setMobnum(e.target.value);
+    },
+    [email]
+  );
 
-  const handlePassChange = useCallback((e) => {
-    setPassword(e.target.value);
-    setShowLoginErr(false);
-  }, [password]);
+  const handlePassChange = useCallback(
+    (e) => {
+      setPassword(e.target.value);
+      setShowLoginErr(false);
+    },
+    [password]
+  );
 
   const handleLogin = useCallback(
-    async(e) => {
+    async (e) => {
       // /login
-      axios.post('http://localhost:4000/api/users/login', {
-        email, 
-        password
-      }).then((res) => {
-        console.log('in then', res)
-        if (res?.data?.success) {
-          dispatch(setUserAuthenticated(true));
-          dispatch(setUserEmail(email));
-          // connect to socket.io 
-          socket.connect();
-          // navigate to /profile
-          navigate("/profile");
-          // set auth token
-          localStorage.setItem("jwtToken", res?.data?.token);
-        }
-      })
-      .catch(() => {
-        console.log("in catchs")
-        setShowLoginErr(true);
-      })
+      axios
+        .post("http://localhost:4000/api/users/login", {
+          email,
+          password,
+        })
+        .then((res) => {
+          console.log("in then", res);
+          if (res?.data?.success) {
+            dispatch(setUserAuthenticated(true));
+            dispatch(setUserEmail(email));
+            // connect to socket.io
+            socket.connect();
+            // navigate to /profile
+            navigate("/profile");
+            // set auth token
+            localStorage.setItem("jwtToken", res?.data?.token);
+            dispatch(
+              getParityRecord(
+                "http://localhost:4000/game/getAllPeriodRecords",
+                { offset: 0, limit: 10 },
+                {
+                  "Content-Type": "application/json",
+                  Authorization: res?.data?.token,
+                }
+              )
+            );
+            dispatch(
+              getUserParityRecord(
+                `http://localhost:4000/game/getCurrentUserParityRecord`,
+                { offset: 0, limit: 10, userEmail: email },
+                {
+                  "Content-Type": "application/json",
+                  Authorization: res?.data?.token,
+                }
+              )
+            );
+          }
+        })
+        .catch(() => {
+          setShowLoginErr(true);
+        });
 
       // signInWithEmailAndPassword(auth, email, password)
       //   .then((res) => {
       //     dispatch(setUserAuthenticated(true));
       //     dispatch(setUserEmail(res.user.email));
-      //     // connect to socket.io 
+      //     // connect to socket.io
       //     socket.connect();
       //     // navigate to /profile
       //     navigate("/profile");
@@ -104,19 +138,13 @@ const Login = () => {
     );
   };
 
-  const handlePassBlur = useCallback(
-    () => {
-      setPwVisible(false);
-    },
-    [isPwVisible]
-  );
+  const handlePassBlur = useCallback(() => {
+    setPwVisible(false);
+  }, [isPwVisible]);
 
-  const handleTypeOnClick = useCallback(
-    () => {
+  const handleTypeOnClick = useCallback(() => {
     setPwVisible(!isPwVisible);
-    },
-    [isPwVisible]
-  );
+  }, [isPwVisible]);
 
   return (
     <>
@@ -158,9 +186,7 @@ const Login = () => {
 
         <Btn
           login="true"
-          disabled={
-            !password || email.length === 0
-          }
+          disabled={!password || email.length === 0}
           onClick={handleLogin}
         >
           Continue
