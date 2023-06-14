@@ -16,15 +16,17 @@ export const setMyParityRecord = (payload) => ({
   payload,
 });
 
-export const getParityRecord = (url, data, headers) => (dispatch) => {
+export const getParityRecord = (url, data, headers, setParityRecLoading) => (dispatch) => {
   axios
     .post(url, data, { headers })
     .then((res) => {
       console.log("axios in action");
-      dispatch(setTotalPeriodData(res?.data?.totalLen));
+      setParityRecLoading(false);
+      dispatch(setTotalPeriodData(res?.data?.totalLen)); // length 
       dispatch(setParityRecord(res?.data?.periodsList));
     })
     .catch((err) => {
+      setParityRecLoading(false);
       console.log(err);
     });
 };

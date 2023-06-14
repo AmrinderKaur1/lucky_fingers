@@ -27,14 +27,13 @@ import {
 import { CardContainer, Btn } from "../MyProfile/MyProfileElements";
 import GameModal from "./GameModal";
 import { handleChangeModalVisibility } from "../../helpers/modals";
-import { numMappedToClr, playOptionButtons } from "../../helpers/heads";
+import { numMappedToClr } from "../../helpers/heads";
 import { socket } from "../../Socket";
-import axios from "axios";
 import {
-  setTotalPeriodData,
   getParityRecord,
   getUserParityRecord,
 } from "../../redux/game/game.actions";
+import Loader from "../../helpers/Loader";
 
 const { Column } = Table;
 
@@ -91,6 +90,8 @@ const BetGame = () => {
   const [myParityDataSrc, setMyParityDataSrc] = useState(
     myParityRecord?.slice(0, limit)
   );
+  const [parityRecLoading, setParityRecLoading] = useState(false);
+  const [myParityRecLoading, setMyParityRecLoading] = useState(false);
 
   const [fooEvents, setFooEvents] = useState([]);
 
@@ -163,10 +164,9 @@ const BetGame = () => {
         : clr === "blue"
         ? "isJoinBlueVisible"
         : "isJoinRedVisible";
-    handleChangeModalVisibility(true, modalName, dispatch);
     setIsModalOpen(true);
     setModalColor(clr);
-    setSelectedNum(num);
+    handleChangeModalVisibility(true, modalName, dispatch);
   };
 
   const handleClrOptionClick = useCallback(
@@ -180,9 +180,10 @@ const BetGame = () => {
   const handleNumberOptionClick = useCallback(
     (clr, num) => {
       showModal(clr, num);
+      setSelectedNum(num);
       setModalHeadingText(`Select ${num}`);
     },
-    [modalHeadingText]
+    [modalHeadingText, selectedNum]
   );
 
   const handlePageChange = (page, tableName) => {
@@ -194,6 +195,7 @@ const BetGame = () => {
     };
 
     if (tableName === "parityRec") {
+      setParityRecLoading(true);
       dispatch(
         getParityRecord(
           "http://localhost:4000/game/getAllPeriodRecords",
@@ -201,33 +203,30 @@ const BetGame = () => {
           {
             "Content-Type": "application/json",
             Authorization: localStorage?.jwtToken,
-          }
+          }, setParityRecLoading
         )
-      );
+      )
     } else {
+      setMyParityRecLoading(true);
       setMyParityDataSrc(myParityRecord?.slice(offsetVal, limit * page));
+      setMyParityRecLoading(false);
     }
   };
 
   const getDataSource = () => {
     const parityDataSrc = parityRecordData?.length
       ? parityRecordData?.map((el) => {
-          return {
-            period: el?.periodId,
-            price: el?.totalBetAmt,
-            number: el?.luckyDrawNum,
-            color: numMappedToClr[el?.luckyDrawNum],
-          };
+          if (el?.periodId !== periodId) {
+            return {
+              period: el?.periodId,
+              price: el?.totalBetAmt,
+              number: el?.luckyDrawNum,
+              color: numMappedToClr[el?.luckyDrawNum],
+            }
+          }
         })
       : [];
     return parityDataSrc;
-  };
-
-  console.log(myParityRecord, "myParityRecord");
-
-  const getMyParityDataSrc = () => {
-    console.log(myParityRecord, "myParityRecord");
-    return [];
   };
 
   return (
@@ -343,7 +342,7 @@ const BetGame = () => {
               render={(val) => {
                 return (
                   <Popover content={val} placement="leftTop">
-                    .... {val?.slice(val?.length - 4, val?.length)}
+                    {`.... ${val?.slice(val?.length - 4, val?.length)}`}
                   </Popover>
                 );
               }}
@@ -353,11 +352,10 @@ const BetGame = () => {
             <Column
               className="result-column"
               title="Result"
-              dataIndex="color"
-              key="color"
               render={(result) => <Rounds key={result} color={result} />}
             />
           </RecordTable>
+          {parityRecLoading && <Loader />}
           <StyledPagination
             simple
             defaultCurrent={1}
@@ -428,6 +426,8 @@ const BetGame = () => {
             total={maxPagesMyParity * 10}
           />
         </ParityRecordCont>
+        {myParityRecLoading && <Loader />}
+        {console.log(selectedNum, "num here")}
         {isModalOpen && (
           <GameModal
             color={modalColor}

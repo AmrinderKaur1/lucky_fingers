@@ -74,7 +74,6 @@ const Login = () => {
           password,
         })
         .then((res) => {
-          console.log("in then", res);
           if (res?.data?.success) {
             dispatch(setUserAuthenticated(true));
             dispatch(setUserEmail(email));

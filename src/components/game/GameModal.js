@@ -20,7 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleChangeModalVisibility } from "../../helpers/modals";
 import axios from "axios";
 
-const GameModal = ({ color, heading, periodId, randomNum, selectedNum }) => {
+const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
+  console.log(numSelected, 'numSelected');
   const dispatch = useDispatch();
   const { isJoinGreenVisible, isJoinBlueVisible, isJoinRedVisible } =
     useSelector((state) => ({
@@ -51,7 +52,7 @@ const GameModal = ({ color, heading, periodId, randomNum, selectedNum }) => {
 
     // 4. JOIN BLUE, if the result shows 1,3,7,9, you will get (2.5 times of Investment)
 
-    if (randomNum === selectedNum) {
+    if (randomNum === numSelected) {
       return 92
     } else if (color?.toLowerCase() === 'green' && [0, 5].includes(randomNum)) {
       return 5
@@ -59,6 +60,12 @@ const GameModal = ({ color, heading, periodId, randomNum, selectedNum }) => {
       return 2.5
     } else if (color?.toLowerCase() === 'blue' && [1, 3, 7, 9].includes(randomNum)) {
       return 2.5
+    } else {
+      // tbd
+      // what if user bets on 
+      // a.) number and number !== randomNum -> what investment
+      // b.) if user chooses clr, and random num belongs to diff clr, -> what investment
+      return 0 // from mine side in case, i.e. user lost all his invested money 
     }
   };
 
@@ -68,10 +75,10 @@ const GameModal = ({ color, heading, periodId, randomNum, selectedNum }) => {
       userEmail: "sapifeb446@oniecan.com",
       luckyDrawNum: randomNum,
       amount: defaultAmtSelected,
-      selectedNum: selectedNum ?? -1,
+      selectedNum: numSelected ?? -1,
       selectedClr: color,
       timeStamp: "22",
-      status: randomNum === selectedNum ?? -1 ? "won" : "lost",
+      status: randomNum === numSelected ?? -1 ? "won" : "lost",
       amountMultipliedBy: getInvestmentTimes(),
     };
 
