@@ -21,7 +21,6 @@ import { handleChangeModalVisibility } from "../../helpers/modals";
 import axios from "axios";
 
 const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
-  console.log(numSelected, 'numSelected');
   const dispatch = useDispatch();
   const { isJoinGreenVisible, isJoinBlueVisible, isJoinRedVisible } =
     useSelector((state) => ({

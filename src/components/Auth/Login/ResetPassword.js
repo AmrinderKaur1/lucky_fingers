@@ -12,7 +12,6 @@ import {
   InputBoxes,
   AuthLink,
 } from "./LoginElements";
-import Footer from "../../Footer";
 import { setUserAuthenticated } from "../../../redux/auth/auth.actions";
 
 const ForgotPassword = (props) => {

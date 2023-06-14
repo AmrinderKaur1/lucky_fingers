@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import Footer from "./components/Footer";
 import { GlobalStyles } from "./GlobalStyles";
 import Home from "./components/Home";
 import SearchPage from "./components/Search";
@@ -26,7 +25,7 @@ import PrivacyPolicy from "./components/ChildComps/PrivacyPolicy";
 import Rda from "./components/ChildComps/Rda";
 import ProtectedRoute from "./ProtectedRoutes";
 import BetGame from "./components/game";
-import store, {persistor} from "./store";
+import store, { persistor } from "./store";
 
 
 function App() {

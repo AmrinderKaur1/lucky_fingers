@@ -4,6 +4,7 @@ export const authInitialState = {
     isAuthenticated: false,
     userEmail: '',
     userContactNum: '',
+    activeFooter: 'home',
 }
 
 export default (state = authInitialState, action) => {
@@ -14,6 +15,8 @@ export default (state = authInitialState, action) => {
             return { ...state, userEmail: action.payload };
         case authActions.SET_USER_CONTACT_NUM :
             return {...state, userContactNum: action.payload};
+        case authActions.SET_ACTIVE_FOOTER:
+            return { ...state, activeFooter: action.payload };
         default :
             return state;
     }

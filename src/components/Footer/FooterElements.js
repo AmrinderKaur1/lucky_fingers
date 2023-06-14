@@ -38,9 +38,17 @@ export const FooterBars = styled.div`
 export const FooterText = styled.p`
     font-size: 9px;
     margin: 0;
+    color: #666;
+    &.active {
+        color: #ff570a;
+    }
 `;
 
 export const FooterIcons = styled.div`
     padding: 2px;
     margin-top: 4px;
+    color: #666;
+    &.active {
+        color: #ff570a;
+    }
 `;
