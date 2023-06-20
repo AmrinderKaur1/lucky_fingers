@@ -43,15 +43,15 @@ const Withdrawl = () => {
   };
 
   const handleClick = (val) => {
-    if (val === 'Add Bank Card' || val === 'Add upi-withdrawl Card')  {
+    if (val === "Add Bank Card" || val === "Add upi-withdrawl Card") {
       navigate("/pages/person/addbank", {
         state: {
-          navigateBackTo: "/pages/person/withdrawl" ,
-          isSelectUpiOption: val === 'Add upi-withdrawl Card',
+          navigateBackTo: "/pages/person/withdrawl",
+          isSelectUpiOption: val === "Add upi-withdrawl Card",
         },
-    });
-    } 
-  }
+      });
+    }
+  };
 
   const renderDropdown = (content) => {
     return content.map((val, index) => {
@@ -125,7 +125,9 @@ const Withdrawl = () => {
           <Icon />
           <h1>Withdrawl</h1>
         </AuthLink>
-        <AuthLink to={"/pages/person/withdrawl-record"}><MenuOutlined className="side-icon"/></AuthLink>
+        <AuthLink to={"/pages/person/withdrawl-record"}>
+          <MenuOutlined className="side-icon" />
+        </AuthLink>
       </Header>
       <ChildContainer>
         <Balance>Balance: ₹1.3</Balance>
@@ -148,9 +150,7 @@ const Withdrawl = () => {
           placeholder="Password"
           prefix={<KeyOutlined />}
           maxLength={12}
-          style={{ margin: '8px 8px 1rem 8px',
-            height: '40px',
-            width: '80%' }}
+          style={{ margin: "8px 8px 1rem 8px", height: "40px", width: "80%" }}
         />
         <PageButton>Withdrawl</PageButton>
       </ChildContainer>

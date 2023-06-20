@@ -5,7 +5,7 @@ import styled from "styled-components";
 const PrivacyPolicy = () => {
   return (
     <div>
-      <Header style={{marginBottom: '0'}}>
+      <Header style={{ marginBottom: "0" }}>
         <AuthLink to={"/profile"}>
           {" "}
           {/* put link here  */}
@@ -133,30 +133,30 @@ const Content = styled.div`
   padding: 16px 16px 50px 16px;
 `;
 const Para = styled.p`
-    margin-block-start: 1em;
-    margin-block-end: 1em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
 `;
 const UnOrderedList = styled.ul`
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 `;
 
 const Headings1 = styled.h1`
-    font-size: 2em;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 `;
 
 const Headings2 = styled.h2`
-display: block;
-    font-size: 1.5em;
-    margin-block-start: 0.83em;
-    margin-block-end: 0.83em;
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
 `;
 
 export default PrivacyPolicy;

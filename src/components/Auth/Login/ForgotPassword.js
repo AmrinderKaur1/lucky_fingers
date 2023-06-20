@@ -1,5 +1,10 @@
-import React, {useCallback, useState} from "react";
-import { MobileOutlined, CodeOutlined, KeyOutlined, MailOutlined } from "@ant-design/icons";
+import React, { useCallback, useState } from "react";
+import {
+  MobileOutlined,
+  CodeOutlined,
+  KeyOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
 import { Input } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -24,21 +29,26 @@ const ForgotPassword = (props) => {
 
   const [email, setEmail] = useState("");
 
-  const changeHandler = useCallback(e => {
+  const changeHandler = useCallback(
+    (e) => {
       setEmail(e.target.value);
-  }, [email]);
+    },
+    [email]
+  );
 
   const handleForgotPassword = useCallback(() => {
-    sendPasswordResetEmail(auth, email).then((res) => {
-      console.log(res, "res")
-    }).catch((err) => {
-      console.log(err, 'err')
-    })
+    sendPasswordResetEmail(auth, email)
+      .then((res) => {
+        console.log(res, "res");
+      })
+      .catch((err) => {
+        console.log(err, "err");
+      });
     // set in local storge as well
-    dispatch(setUserAuthenticated(true))
+    dispatch(setUserAuthenticated(true));
     // navigate to /profile
     navigate("/profile");
-  }, [email])
+  }, [email]);
 
   return (
     <>
@@ -61,7 +71,9 @@ const ForgotPassword = (props) => {
         </InputBoxes>
 
         <AuthLink to={"/forgot-password"}>
-          <Btn otp={false} disabled={!email} onClick={handleForgotPassword}>Continue</Btn>
+          <Btn otp={false} disabled={!email} onClick={handleForgotPassword}>
+            Continue
+          </Btn>
         </AuthLink>
       </AuthContainer>
     </>

@@ -1,10 +1,16 @@
-import React from 'react'
-import {Divider }from 'antd';
-import { Empty } from 'antd';
-import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import React from "react";
+import { Divider } from "antd";
+import { Empty } from "antd";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 
-import { Header, AuthLink, Icon  } from '../Auth/Login/LoginElements'
-import { RecordCol, RecordRow, Page, ArrowIcons, RecordContainer } from './RechargeRecord';
+import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
+import {
+  RecordCol,
+  RecordRow,
+  Page,
+  ArrowIcons,
+  RecordContainer,
+} from "./RechargeRecord";
 
 const transactionRec = [];
 
@@ -13,8 +19,8 @@ const Transactions = () => {
     <RecordContainer>
       <Header>
         <AuthLink to={"/profile"}>
-            <Icon />
-            <h1>Transactions</h1>
+          <Icon />
+          <h1>Transactions</h1>
         </AuthLink>
       </Header>
       {!transactionRec.length && <Empty />}
@@ -33,7 +39,7 @@ const Transactions = () => {
         <Divider style={{ margin: "0" }} />
       </RecordRow>
     </RecordContainer>
-  )
-}
+  );
+};
 
-export default Transactions
+export default Transactions;

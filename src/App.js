@@ -27,75 +27,74 @@ import ProtectedRoute from "./ProtectedRoutes";
 import BetGame from "./components/game";
 import store, { persistor } from "./store";
 
-
 function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-      <BrowserRouter>
-        <GlobalStyles />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+        <BrowserRouter>
+          <GlobalStyles />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path='/win' element={<BetGame />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/pages/person/recharge" element={<Recharge />} />
-            <Route
-              path="/pages/person/recharge-record"
-              element={<RechargeRecord />}
-            />
-            <Route path="/pages/person/withdrawl" element={<Withdrawl />} />
-            <Route
-              path="/pages/person/withdrawl-record"
-              element={<WithdrawlRecord />}
-            />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/win" element={<BetGame />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/pages/person/recharge" element={<Recharge />} />
+              <Route
+                path="/pages/person/recharge-record"
+                element={<RechargeRecord />}
+              />
+              <Route path="/pages/person/withdrawl" element={<Withdrawl />} />
+              <Route
+                path="/pages/person/withdrawl-record"
+                element={<WithdrawlRecord />}
+              />
 
-            <Route
-              path="/pages/person/transactions"
-              element={<Transactions />}
-            />
+              <Route
+                path="/pages/person/transactions"
+                element={<Transactions />}
+              />
 
-            <Route path="/pages/person/bank" element={<BankCard />} />
-            <Route path="/pages/person/addbank" element={<AddBankCard />} />
+              <Route path="/pages/person/bank" element={<BankCard />} />
+              <Route path="/pages/person/addbank" element={<AddBankCard />} />
 
-            <Route
-              path="/pages/person/address"
-              element={<Address heading="Address" />}
-            />
+              <Route
+                path="/pages/person/address"
+                element={<Address heading="Address" />}
+              />
 
-            <Route
-              path="/pages/person/add-address"
-              element={<EditAddress heading="Add Address" />}
-            />
-            <Route
-              path="/pages/person/password"
-              element={<ForgotPassword isProfile={false} />}
-            />
-            <Route
-              path="/pages/person/password-reset"
-              element={<ForgotPassword isProfile={true} />}
-            />
+              <Route
+                path="/pages/person/add-address"
+                element={<EditAddress heading="Add Address" />}
+              />
+              <Route
+                path="/pages/person/password"
+                element={<ForgotPassword isProfile={false} />}
+              />
+              <Route
+                path="/pages/person/password-reset"
+                element={<ForgotPassword isProfile={true} />}
+              />
 
-            <Route
-              path="/pages/person/complaint"
-              element={<ComplaintsAndSuggestions />}
-            />
-            <Route
-              path="/pages/person/addComplaint"
-              element={<AddSuggNComp />}
-            />
+              <Route
+                path="/pages/person/complaint"
+                element={<ComplaintsAndSuggestions />}
+              />
+              <Route
+                path="/pages/person/addComplaint"
+                element={<AddSuggNComp />}
+              />
 
-            <Route path="/pages/person/risk" element={<Rda />} />
-          </Route>
-          <Route path="/pages/person/privacy" element={<PrivacyPolicy />} />
-        </Routes>
-        {/* {!isAuthenticated && <Footer /> } */}
-      </BrowserRouter>
+              <Route path="/pages/person/risk" element={<Rda />} />
+            </Route>
+            <Route path="/pages/person/privacy" element={<PrivacyPolicy />} />
+          </Routes>
+          {/* {!isAuthenticated && <Footer /> } */}
+        </BrowserRouter>
       </PersistGate>
     </Provider>
   );

@@ -41,7 +41,7 @@ const Recharge = () => {
     return methods.map((val, index) => {
       return (
         <>
-          <Row  style={{ padding: "14px 0" }}>
+          <Row style={{ padding: "14px 0" }}>
             <Col span={10}>
               <Checkbox style={{ fontSize: "14px" }} />
             </Col>
@@ -49,7 +49,7 @@ const Recharge = () => {
               {val}
             </Col>
           </Row>
-          <Divider style={{ margin: "0" }} key={index}/>
+          <Divider style={{ margin: "0" }} key={index} />
         </>
       );
     });

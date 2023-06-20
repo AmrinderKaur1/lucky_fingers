@@ -1,4 +1,4 @@
-import * as gameActions from './game.constants';
+import * as gameActions from "./game.constants";
 
 export const gameInitialState = {
   totalPeriodData: 0,
@@ -11,7 +11,7 @@ export const gameInitialState = {
   minutes: null,
   seconds: null,
   timeExpires: +new Date(Date.now()),
-}
+};
 
 export default (state = gameInitialState, action) => {
   switch (action.type) {
@@ -38,5 +38,4 @@ export default (state = gameInitialState, action) => {
     default:
       return state;
   }
-
-}
+};

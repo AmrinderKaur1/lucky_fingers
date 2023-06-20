@@ -36,7 +36,6 @@ import {
 import useGameHook from "../../../helpers/useGameHook";
 
 const Login = () => {
-
   const gameHook = useGameHook();
   const navigate = useNavigate();
   const dispatch = useDispatch();

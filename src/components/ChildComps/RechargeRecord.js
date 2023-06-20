@@ -125,7 +125,7 @@ export const RecordCol = styled(Col)`
   /* transform: translate(-8px, 10px); */
 `;
 export const Page = styled.p`
-    padding: 0 4px;
+  padding: 0 4px;
 `;
 export const RecordContainer = styled.div`
   box-shadow: 3px 3px 4px rgb(26 26 26 / 20%);

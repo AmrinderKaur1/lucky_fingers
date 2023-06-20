@@ -19,13 +19,14 @@ import {
 const useGameHook = () => {
   const dispatch = useDispatch();
 
-  const { startCountdown, minutes, seconds, userEmail, timeExpires, } = useSelector((state) => ({
-    startCountdown: state.game.startCountdown,
-    minutes: state.game.minutes,
-    seconds: state.game.seconds,
-    userEmail: state.login.userEmail,
-    timeExpires: state.game.timeExpires,
-  }));
+  const { startCountdown, minutes, seconds, userEmail, timeExpires } =
+    useSelector((state) => ({
+      startCountdown: state.game.startCountdown,
+      minutes: state.game.minutes,
+      seconds: state.game.seconds,
+      userEmail: state.login.userEmail,
+      timeExpires: state.game.timeExpires,
+    }));
 
   useEffect(() => {
     let interval;

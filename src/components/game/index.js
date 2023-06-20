@@ -283,14 +283,19 @@ const BetGame = () => {
                 <HeadingCol bold>{periodId}</HeadingCol>
               </Period>
               <Countdown span={12}>
-                {startCountdown && minutes >= 0 && seconds >= 0 && minutes !== null && seconds !== null&& (
-                  <>
-                    <HeadingCol>Count down</HeadingCol>
-                    <HeadingCol size bold>
-                      0{minutes}:{seconds > 0 && seconds < 10 ? `0${seconds}` : seconds} 
-                    </HeadingCol>
-                  </>
-                )}
+                {startCountdown &&
+                  minutes >= 0 &&
+                  seconds >= 0 &&
+                  minutes !== null &&
+                  seconds !== null && (
+                    <>
+                      <HeadingCol>Count down</HeadingCol>
+                      <HeadingCol size bold>
+                        0{minutes}:
+                        {seconds > 0 && seconds < 10 ? `0${seconds}` : seconds}
+                      </HeadingCol>
+                    </>
+                  )}
                 {showNumber && (
                   <>
                     <HeadingCol>Bet Number</HeadingCol>

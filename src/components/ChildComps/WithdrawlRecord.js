@@ -22,21 +22,21 @@ const withdrawlRec = [
     status: "Success",
     date: "2022-11-30",
     time: "22:03:18",
-    feeAccount: "Fee: 30, to account: 100"
+    feeAccount: "Fee: 30, to account: 100",
   },
   {
     price: "100",
     status: "Wait",
     date: "2022-11-30",
     time: "22:03:18",
-    feeAccount: "Fee: 30, to account: 100"
+    feeAccount: "Fee: 30, to account: 100",
   },
   {
     price: "100",
     status: "Fail",
     date: "2022-11-30",
     time: "22:03:18",
-    feeAccount: "Fee: 30, to account: 100"
+    feeAccount: "Fee: 30, to account: 100",
   },
 ];
 
@@ -52,7 +52,8 @@ const WithdrawlRecord = () => {
             </Col>
             <Col span={12}>
               <Data>
-                {value.price}&nbsp;{value.status}<br/>
+                {value.price}&nbsp;{value.status}
+                <br />
                 <FeeAccount>{value.feeAccount}</FeeAccount>
               </Data>
             </Col>
@@ -62,7 +63,7 @@ const WithdrawlRecord = () => {
               </DateTime>
             </Col>
           </RecordRow>
-          <Divider style={{ margin: "0" }} key={index+1} />
+          <Divider style={{ margin: "0" }} key={index + 1} />
         </>
       );
     });
@@ -95,8 +96,8 @@ const WithdrawlRecord = () => {
 };
 
 const FeeAccount = styled.p`
-    color: #aaa;
-    padding: 5px 0;
+  color: #aaa;
+  padding: 5px 0;
 `;
 
 export default WithdrawlRecord;

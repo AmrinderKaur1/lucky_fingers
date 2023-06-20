@@ -12,7 +12,6 @@ import {
 } from "./AddBankCard";
 
 const EditAddress = (props) => {
-
   const renderEditAddress = () => {
     return (
       <BorderLessContainer>

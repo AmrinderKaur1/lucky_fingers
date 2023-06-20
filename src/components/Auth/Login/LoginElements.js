@@ -45,7 +45,7 @@ export const PaymentSelectors = styled.p`
   padding: 0 10px 15px 10px;
 
   &.active {
-     /* underline  */
+    /* underline  */
     border-bottom-style: solid;
     border-bottom-width: 3.1px;
     width: fit-content;

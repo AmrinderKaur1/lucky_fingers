@@ -25,7 +25,10 @@ import {
   DropdownCol,
   DropdownA,
 } from "./MyProfileElements";
-import { setUserAuthenticated, setUserEmail } from "../../redux/auth/auth.actions";
+import {
+  setUserAuthenticated,
+  setUserEmail,
+} from "../../redux/auth/auth.actions";
 import Footer from "../Footer";
 import { signOut } from "firebase/auth";
 import { auth } from "../../Firebase";
@@ -256,7 +259,7 @@ const Profile = () => {
   };
 
   const handleLogout = useCallback(() => {
-    dispatch(setUserAuthenticated(false))
+    dispatch(setUserAuthenticated(false));
 
     // firebase - logout
     // signOut(auth).then(() => {

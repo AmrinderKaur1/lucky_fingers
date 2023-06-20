@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Rda = () => {
   return (
     <div>
-      <Header style={{margin: '0'}}>
+      <Header style={{ margin: "0" }}>
         <AuthLink to={"/profile"}>
           {" "}
           {/* put link here  */}
@@ -67,11 +67,48 @@ const Rda = () => {
           </span>
         </Para>
 
-        <Heading3 >Cancellation and refundable Policy</Heading3>
-        <Para><span>In case of any discrepancy we can cancel any of the orders placed by you. A few reasons for cancellation from our end usually include limitation of the product in the inventory, error in pricing, error in product information etc. We also have the right to check out for extra information for the purpose of accepting orders in a few cases. We make sure to notify you if in case your order is cancelled partially or completely or if in case any extra data is required for the purpose of accepting your order.</span></Para>
-        <Para><span>Once you place the order, such order can be cancelled from your end before the shipping is undertaken to the destination. Once the request of cancellation for ready for shipping product is received by us, we make sure to refund the amount through the same mode of payment within 5 working days. Cancellation of the order of Gold coin(exchanged by integrals) shall not be accepted as under Company’s policies.</span></Para>
-        <Para><span>We don’t accept Cancellation requests for Smart Buy orders or customized jewellery orders. In specific situations when the customer wants the money back or wants to exchange it with other products, making charges of the product and stone charges, if there is any stone on the product shall be deducted from the payment and balance will be refunded back to customer account within 5 working days.</span></Para>
-        <Para><span>If in case the amount is deducted from your account and the transaction has failed, the same will be refunded back to your account within 72 hours.</span></Para>
+        <Heading3>Cancellation and refundable Policy</Heading3>
+        <Para>
+          <span>
+            In case of any discrepancy we can cancel any of the orders placed by
+            you. A few reasons for cancellation from our end usually include
+            limitation of the product in the inventory, error in pricing, error
+            in product information etc. We also have the right to check out for
+            extra information for the purpose of accepting orders in a few
+            cases. We make sure to notify you if in case your order is cancelled
+            partially or completely or if in case any extra data is required for
+            the purpose of accepting your order.
+          </span>
+        </Para>
+        <Para>
+          <span>
+            Once you place the order, such order can be cancelled from your end
+            before the shipping is undertaken to the destination. Once the
+            request of cancellation for ready for shipping product is received
+            by us, we make sure to refund the amount through the same mode of
+            payment within 5 working days. Cancellation of the order of Gold
+            coin(exchanged by integrals) shall not be accepted as under
+            Company’s policies.
+          </span>
+        </Para>
+        <Para>
+          <span>
+            We don’t accept Cancellation requests for Smart Buy orders or
+            customized jewellery orders. In specific situations when the
+            customer wants the money back or wants to exchange it with other
+            products, making charges of the product and stone charges, if there
+            is any stone on the product shall be deducted from the payment and
+            balance will be refunded back to customer account within 5 working
+            days.
+          </span>
+        </Para>
+        <Para>
+          <span>
+            If in case the amount is deducted from your account and the
+            transaction has failed, the same will be refunded back to your
+            account within 72 hours.
+          </span>
+        </Para>
       </Content>
     </div>
   );

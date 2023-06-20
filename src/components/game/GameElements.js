@@ -1,5 +1,14 @@
 import styled from "styled-components";
-import { Col, Row, Button, Divider, Table, Modal, Input, Pagination } from "antd";
+import {
+  Col,
+  Row,
+  Button,
+  Divider,
+  Table,
+  Modal,
+  Input,
+  Pagination,
+} from "antd";
 
 export const GameContainer = styled.div`
   margin-bottom: 44px;

@@ -86,18 +86,15 @@ const ComplaintsAndSuggestions = () => {
     );
   };
 
-  const statusHandler = useCallback(
-    (idx) => {
-      if (idx === 0) {
-        setIsCompleted(true);
-        setIsWaiting(false);
-      } else {
-        setIsCompleted(false);
-        setIsWaiting(true);
-      }
-    },
-    []
-  );
+  const statusHandler = useCallback((idx) => {
+    if (idx === 0) {
+      setIsCompleted(true);
+      setIsWaiting(false);
+    } else {
+      setIsCompleted(false);
+      setIsWaiting(true);
+    }
+  }, []);
   return (
     <div>
       <Header style={{ marginBottom: "0" }}>
@@ -116,7 +113,9 @@ const ComplaintsAndSuggestions = () => {
             <PaymentSelectors
               onClick={() => statusHandler(idx)}
               className={
-                (isCompleted && idx === 0) || (isWaiting && idx !== 0) ? "active" : ""
+                (isCompleted && idx === 0) || (isWaiting && idx !== 0)
+                  ? "active"
+                  : ""
               }
               key={idx}
             >

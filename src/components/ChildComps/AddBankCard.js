@@ -100,9 +100,7 @@ const AddBankCard = () => {
     <>
       <RecordContainer style={{ boxShadow: "none" }}>
         <Header style={{ margin: "0" }}>
-          <AuthLink
-            to={location.state.navigateBackTo}
-          >
+          <AuthLink to={location.state.navigateBackTo}>
             <Icon />
             <h1>Add Bank Card</h1>
           </AuthLink>

@@ -1,10 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Spinner from '../images/Spinner.gif';
+import Spinner from "../images/Spinner.gif";
 
 const Loader = () => {
-
   return (
     <LoaderWrapper>
       <Img src={Spinner} alt="Loading..." />
@@ -22,4 +21,3 @@ const Img = styled.img`
 `;
 
 export default Loader;
-

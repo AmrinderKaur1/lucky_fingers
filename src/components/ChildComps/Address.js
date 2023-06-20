@@ -45,7 +45,7 @@ const addressData = [
 const Address = (props) => {
   const [open, setOpen] = useState(false);
   const [editAddressOpen, setEditAddressOpen] = useState(false);
-  const [isAddAddress, setAddAddress] = useState(false)
+  const [isAddAddress, setAddAddress] = useState(false);
 
   const handleCancel = () => {
     setOpen(false);
@@ -87,7 +87,7 @@ const Address = (props) => {
   };
   const handleAddAddress = () => {
     setAddAddress(true);
-  }
+  };
 
   const renderModal = () => {
     return (
@@ -108,20 +108,22 @@ const Address = (props) => {
 
   return (
     <>
-    <div>
-      <Header style={{ margin: "0" }}>
-        <AuthLink to={"/profile"}>
-          {/* put link here  */}
-          <Icon />
-          <h1>{props.heading}</h1>
-        </AuthLink>
-        <AuthLink to={"/pages/person/add-address"}><PlusOutlined className="side-icon" /></AuthLink>
-      </Header>
-      {renderAddress()}
-      {open && renderModal()}
-    </div>
-    {editAddressOpen && <EditAddress heading="Edit Address" />} 
-    {isAddAddress && <EditAddress heading="Add Address" />}
+      <div>
+        <Header style={{ margin: "0" }}>
+          <AuthLink to={"/profile"}>
+            {/* put link here  */}
+            <Icon />
+            <h1>{props.heading}</h1>
+          </AuthLink>
+          <AuthLink to={"/pages/person/add-address"}>
+            <PlusOutlined className="side-icon" />
+          </AuthLink>
+        </Header>
+        {renderAddress()}
+        {open && renderModal()}
+      </div>
+      {editAddressOpen && <EditAddress heading="Edit Address" />}
+      {isAddAddress && <EditAddress heading="Add Address" />}
     </>
   );
 };

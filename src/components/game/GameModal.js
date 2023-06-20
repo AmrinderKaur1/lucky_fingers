@@ -41,7 +41,6 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
       : "isJoinRedVisible";
 
   const getInvestmentTimes = () => {
-
     // 1. SELECT NUMBER, if the result is the same as the number you selected
     // you will get (92 times of Investment)
 
@@ -52,19 +51,25 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
     // 4. JOIN BLUE, if the result shows 1,3,7,9, you will get (2.5 times of Investment)
 
     if (randomNum === numSelected) {
-      return 92
-    } else if (color?.toLowerCase() === 'green' && [0, 5].includes(randomNum)) {
-      return 5
-    } else if (color?.toLowerCase() === 'red' && [2, 4, 6, 8].includes(randomNum)) {
-      return 2.5
-    } else if (color?.toLowerCase() === 'blue' && [1, 3, 7, 9].includes(randomNum)) {
-      return 2.5
+      return 92;
+    } else if (color?.toLowerCase() === "green" && [0, 5].includes(randomNum)) {
+      return 5;
+    } else if (
+      color?.toLowerCase() === "red" &&
+      [2, 4, 6, 8].includes(randomNum)
+    ) {
+      return 2.5;
+    } else if (
+      color?.toLowerCase() === "blue" &&
+      [1, 3, 7, 9].includes(randomNum)
+    ) {
+      return 2.5;
     } else {
       // tbd
-      // what if user bets on 
+      // what if user bets on
       // a.) number and number !== randomNum -> what investment
       // b.) if user chooses clr, and random num belongs to diff clr, -> what investment
-      return 0 // from mine side in case, i.e. user lost all his invested money 
+      return 0; // from mine side in case, i.e. user lost all his invested money
     }
   };
 
@@ -81,7 +86,7 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
       amountMultipliedBy: getInvestmentTimes(),
     };
 
-    console.log(localStorage?.jwtToken, 'localStorage?.jwtToken')
+    console.log(localStorage?.jwtToken, "localStorage?.jwtToken");
     axios
       .post("http://localhost:4000/game/bet-period", params, {
         headers: {

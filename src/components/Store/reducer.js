@@ -1,10 +1,10 @@
-import { createStore, applyMiddleware } from 'redux';
-import { persistStore, createMigrate, persistReducer } from 'redux-persist';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import storage from 'redux-persist-indexeddb-storage';
+import { createStore, applyMiddleware } from "redux";
+import { persistStore, createMigrate, persistReducer } from "redux-persist";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import storage from "redux-persist-indexeddb-storage";
 
-import rootReducer from './reducer';
+import rootReducer from "./reducer";
 
 const migrations = {
   0: (state) => ({
@@ -19,15 +19,18 @@ const migrations = {
 };
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   version: 1,
-  storage: storage('WebmailDB'),
+  storage: storage("WebmailDB"),
   migrate: createMigrate(migrations, { debug: false }),
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  persistedReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 const persistor = persistStore(store, null, () => {});
 
 export default () => ({ store, persistor });
