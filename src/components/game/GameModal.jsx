@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Checkbox, Button as Btn } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,6 @@ import {
   GameModalByColor,
   ModalHeading,
   ModalContent,
-  ContractLengthOptions,
   NumberBox,
   Operations,
   Increment,
@@ -33,7 +32,7 @@ function GameModal({ color, heading, periodId, randomNum, numSelected }) {
   const [defaultAmtSelected, setDefaultAmtSelected] = useState(10);
   const [presaleAgreed, setPresaleAgreed] = useState(false);
 
-  const [val, setVal] = useState(0);
+  const val = 0;
   const modalName =
     color === "green"
       ? "isJoinGreenVisible"
@@ -123,10 +122,10 @@ function GameModal({ color, heading, periodId, randomNum, numSelected }) {
   };
 
   const getContractLenOptions = () =>
-    [10, 100, 1000, 10_000].map((el, idx) => (
+    [10, 100, 1000, 10_000].map((el) => (
       <DefaultPaymentOptions
         onClick={() => setDefaultAmtSelected(el)}
-        key={idx * 2}
+        key={el * 2}
         className={defaultAmtSelected === el ? "active" : ""}
         clr={color}
       >

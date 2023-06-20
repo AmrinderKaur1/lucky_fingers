@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react";
-import {
-  MailOutlined,
-} from "@ant-design/icons";
+import { MailOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -20,19 +18,16 @@ import { auth } from "../../../Firebase";
 import useGameHook from "../../../helpers/useGameHook";
 
 function ForgotPassword(props) {
-  const {isProfile} = props;
+  const { isProfile } = props;
   useGameHook();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
 
-  const changeHandler = useCallback(
-    (e) => {
-      setEmail(e.target.value);
-    },
-    []
-  );
+  const changeHandler = useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
 
   const handleForgotPassword = useCallback(() => {
     sendPasswordResetEmail(auth, email)
