@@ -15,8 +15,10 @@ import {
 } from "./LoginElements";
 import { setUserAuthenticated } from "../../../redux/auth/auth.actions";
 import { auth } from "../../../Firebase";
+import useGameHook from "../../../helpers/useGameHook";
 
 const ForgotPassword = (props) => {
+  const gameHook = useGameHook();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

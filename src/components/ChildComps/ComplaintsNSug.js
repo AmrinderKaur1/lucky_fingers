@@ -118,6 +118,7 @@ const ComplaintsAndSuggestions = () => {
               className={
                 (isCompleted && idx === 0) || (isWaiting && idx !== 0) ? "active" : ""
               }
+              key={idx}
             >
               {element}
             </PaymentSelectors>

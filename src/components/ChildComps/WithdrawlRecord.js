@@ -62,7 +62,7 @@ const WithdrawlRecord = () => {
               </DateTime>
             </Col>
           </RecordRow>
-          <Divider style={{ margin: "0" }} />
+          <Divider style={{ margin: "0" }} key={index+1} />
         </>
       );
     });

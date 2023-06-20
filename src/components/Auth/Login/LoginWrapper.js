@@ -33,8 +33,11 @@ import {
   getParityRecord,
   getUserParityRecord,
 } from "../../../redux/game/game.actions";
+import useGameHook from "../../../helpers/useGameHook";
 
 const Login = () => {
+
+  const gameHook = useGameHook();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

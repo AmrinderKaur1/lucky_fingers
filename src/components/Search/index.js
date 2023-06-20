@@ -8,6 +8,7 @@ import img3 from "../../images/search/img3.jpg";
 import img4 from "../../images/search/img4.jpg";
 import { SearchBox, SearchContainer } from "./SearchElements";
 import Footer from "../Footer";
+import useGameHook from "../../helpers/useGameHook";
 
 const { Search } = Input;
 const CardData = [
@@ -38,6 +39,7 @@ const CardData = [
 ];
 
 const SearchPage = () => {
+  const gameHook = useGameHook();
   return (
     <>
       <SearchContainer>

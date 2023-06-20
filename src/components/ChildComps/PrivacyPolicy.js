@@ -44,7 +44,7 @@ const PrivacyPolicy = () => {
             <Para>
               <strong>Company</strong> (referred to as either "the Company",
               "We", "Us" or "Our" in this Agreement) refers to{" "}
-              <text class="dfTxt">LuLu Malls</text>.
+              <text className="dfTxt">LuLu Malls</text>.
             </Para>
           </li>
           <li>
@@ -60,8 +60,8 @@ const PrivacyPolicy = () => {
           </li>
           <li>
             <strong>Website</strong> refers to{" "}
-            <text class="dfTxt">LuLu Malls</text>, accessible from{" "}
-            <text class="httpTxt">https://lulumalls.vip</text>
+            <text className="dfTxt">LuLu Malls</text>, accessible from{" "}
+            <text className="httpTxt">https://lulumalls.vip</text>
           </li>
           <li>
             <strong>Service</strong> refers to the Website.

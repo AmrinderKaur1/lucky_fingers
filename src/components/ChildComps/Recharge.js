@@ -9,11 +9,10 @@ import razorpyaHook from "../../helpers/razorpyaHook";
 
 const Recharge = () => {
   const [rechargeAmount, setRechargeAmount] = useState(0);
-  
 
-//   const handleChange = useCallback((amount) => {
-//     setRechargeAmount(amount);
-//   }, []);
+  //   const handleChange = useCallback((amount) => {
+  //     setRechargeAmount(amount);
+  //   }, []);
 
   const handleClick = useCallback((amt) => {
     setRechargeAmount(parseInt(amt));
@@ -26,7 +25,6 @@ const Recharge = () => {
           key={index}
           onClick={() => handleClick(i)}
           style={{ marginRight: "2%" }}
-          
         >
           {i}
         </Button>
@@ -43,7 +41,7 @@ const Recharge = () => {
     return methods.map((val, index) => {
       return (
         <>
-          <Row key={index} style={{ padding: "14px 0" }}>
+          <Row  style={{ padding: "14px 0" }}>
             <Col span={10}>
               <Checkbox style={{ fontSize: "14px" }} />
             </Col>
@@ -51,7 +49,7 @@ const Recharge = () => {
               {val}
             </Col>
           </Row>
-          <Divider style={{ margin: "0" }} />
+          <Divider style={{ margin: "0" }} key={index}/>
         </>
       );
     });
@@ -59,26 +57,28 @@ const Recharge = () => {
 
   const loadScript = (src) => {
     return new Promise((resolve) => {
-      const script = document.createElement('script')
-      script.src = src
+      const script = document.createElement("script");
+      script.src = src;
 
       script.onload = () => {
-        resolve(true)
-      }
-       script.onerror = () => {
-        resolve(false)
-       }
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
 
-       document.body.appendChild(script)
-    })
-  }
+      document.body.appendChild(script);
+    });
+  };
 
-  const displayRazorpay1 = async(amount) => {
-    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+  const displayRazorpay1 = async (amount) => {
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
 
     if (!res) {
-      alert("You are Offline! failed to load.")
-      return
+      alert("You are Offline! failed to load.");
+      return;
     }
 
     const options = {
@@ -89,19 +89,19 @@ const Recharge = () => {
       description: "Thanks for the recharge!",
 
       handler: function (response) {
-        alert(response.razorpay_payment_id)
-        alert("payment successful!")
+        alert(response.razorpay_payment_id);
+        alert("payment successful!");
       },
-    }
+    };
 
-    const paymentObject = new window.Razorpay(options)
+    const paymentObject = new window.Razorpay(options);
     paymentObject.open();
-  }
+  };
 
   const displayRazorpay = () => {
-    console.log(rechargeAmount, "recharge amount ")
+    console.log(rechargeAmount, "recharge amount ");
     razorpyaHook(rechargeAmount);
-  }
+  };
 
   return (
     <Container>
@@ -111,7 +111,9 @@ const Recharge = () => {
           <Icon />
           <h1>Recharge</h1>
         </AuthLink>
-        <AuthLink to={'/pages/person/recharge-record'}><MenuOutlined /></AuthLink>
+        <AuthLink to={"/pages/person/recharge-record"}>
+          <MenuOutlined />
+        </AuthLink>
       </Header>
       <ChildContainer>
         <Balance>Balance: ₹1.3</Balance>
@@ -143,7 +145,12 @@ const Recharge = () => {
           {renderPaymentMethods()}
         </Info>
         {/* on click of this integrate payment api razorpay  */}
-        <PageButton onClick={() => displayRazorpay(rechargeAmount)} disabled={rechargeAmount === 0}>Recharge</PageButton>
+        <PageButton
+          onClick={() => displayRazorpay(rechargeAmount)}
+          disabled={rechargeAmount === 0}
+        >
+          Recharge
+        </PageButton>
       </ChildContainer>
     </Container>
   );
@@ -170,15 +177,15 @@ const Info = styled.div`
   margin-bottom: 20px;
 `;
 export const PageButton = styled(Button)`
-    background: linear-gradient(90deg,#ff9801,#ff570a);
-    color: #fff;
-    width: 110px;
-    padding: 9px 0px;
-    height: inherit;
-    margin-left: calc(50% - 55px);
-    .lhyGm:hover:hover {
-        color: linear-gradient(90deg,#ff9801,#ff570a);
-        background: #fff;
-        border: 1px solid linear-gradient(90deg,#ff9801,#ff570a);
-    }
+  background: linear-gradient(90deg, #ff9801, #ff570a);
+  color: #fff;
+  width: 110px;
+  padding: 9px 0px;
+  height: inherit;
+  margin-left: calc(50% - 55px);
+  .lhyGm:hover:hover {
+    color: linear-gradient(90deg, #ff9801, #ff570a);
+    background: #fff;
+    border: 1px solid linear-gradient(90deg, #ff9801, #ff570a);
+  }
 `;

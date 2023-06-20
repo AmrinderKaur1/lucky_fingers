@@ -178,12 +178,12 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
         </Checkbox>
         <a>PRESALE RULE</a>
       </ModalContent>
-      <DividerZero color />
+      <DividerZero color="true" />
       <CustomModalFooter>
         <Btn onClick={handleCancel}>CLOSE</Btn>&nbsp;&nbsp;
         <Btn
           onClick={handleOk}
-          active
+          active="true"
           disabled={(defaultAmtSelected ?? 0) === 0 || !presaleAgreed}
         >
           CONFIRM

@@ -32,6 +32,7 @@ import {
 } from "../../../redux/auth/auth.actions";
 import { auth } from "../../../Firebase";
 import axios from "axios";
+import useGameHook from "../../../helpers/useGameHook";
 
 export const handleNumericKeyPress = (e) => {
   const charCode = e.charCode != null ? e.charCode : e.keyCode;
@@ -43,6 +44,7 @@ export const handleNumericKeyPress = (e) => {
 };
 
 const Register = () => {
+  const gameHook = useGameHook();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

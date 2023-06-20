@@ -32,6 +32,13 @@ import { socket } from "../../Socket";
 import {
   getParityRecord,
   getUserParityRecord,
+  setMinutes,
+  setPeriodId,
+  setRandomNum,
+  setSeconds,
+  setShowNumber,
+  setStartCountdown,
+  setTotalPeriodData,
 } from "../../redux/game/game.actions";
 import Loader from "../../helpers/Loader";
 
@@ -60,13 +67,29 @@ const BetGame = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { parityRecordData, totalPeriodData, userEmail, myParityRecord } =
-    useSelector((state) => ({
-      parityRecordData: state.game.parityRecordData,
-      totalPeriodData: state.game.totalPeriodData,
-      userEmail: state.login.userEmail,
-      myParityRecord: state.game.myParityRecord,
-    }));
+  const {
+    parityRecordData,
+    totalPeriodData,
+    userEmail,
+    myParityRecord,
+    periodId,
+    randomNum,
+    showNumber,
+    startCountdown,
+    minutes,
+    seconds,
+  } = useSelector((state) => ({
+    parityRecordData: state.game.parityRecordData,
+    totalPeriodData: state.game.totalPeriodData,
+    userEmail: state.login.userEmail,
+    myParityRecord: state.game.myParityRecord,
+    periodId: state.game.periodId,
+    randomNum: state.game.randomNum,
+    showNumber: state.game.showNumber,
+    startCountdown: state.game.startCountdown,
+    minutes: state.game.minutes,
+    seconds: state.game.seconds,
+  }));
 
   const div = totalPeriodData / limit;
   const maxPagesTotalParity = div > Math.floor(div) ? Math.floor(div) + 1 : div;
@@ -79,12 +102,6 @@ const BetGame = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalColor, setModalColor] = useState("");
-  const [randomNum, setRandomNum] = useState(0);
-  const [periodId, setPeriodId] = useState(0);
-  const [startCountdown, setStartCountdown] = useState(false);
-  const [showNumber, setShowNumber] = useState(false);
-  const [minutes, setMinutes] = useState(2);
-  const [seconds, setSeconds] = useState(30);
   const [modalHeadingText, setModalHeadingText] = useState();
   const [selectedNum, setSelectedNum] = useState(undefined);
   const [myParityDataSrc, setMyParityDataSrc] = useState(
@@ -92,66 +109,68 @@ const BetGame = () => {
   );
   const [parityRecLoading, setParityRecLoading] = useState(false);
   const [myParityRecLoading, setMyParityRecLoading] = useState(false);
+  // const [timeExpires, setTimeExpires] = useState(+new Date(Date.now()));
 
-  const [fooEvents, setFooEvents] = useState([]);
+  // const [fooEvents, setFooEvents] = useState([]);
 
-  useEffect(() => {
-    let interval;
-    if (startCountdown) {
-      interval = setInterval(() => {
-        if (minutes === 0 && seconds === 0) {
-          setShowNumber(true);
-          setStartCountdown(false);
-          setMinutes(2);
-          setSeconds(30);
-          // call api to update parity record
-          dispatch(
-            getParityRecord(
-              "http://localhost:4000/game/getAllPeriodRecords",
-              { offset: 0, limit },
-              {
-                "Content-Type": "application/json",
-                Authorization: localStorage?.jwtToken,
-              }
-            )
-          );
-          dispatch(
-            getUserParityRecord(
-              `http://localhost:4000/game/getCurrentUserParityRecord`,
-              { offset: 0, limit, userEmail },
-              {
-                "Content-Type": "application/json",
-                Authorization: localStorage?.jwtToken,
-              }
-            )
-          );
-        } else if (seconds === 0) {
-          setMinutes((minutes) => minutes - 1);
-          setSeconds(59);
-        } else {
-          setSeconds((seconds) => seconds - 1);
-        }
-      }, [1000]);
-    }
-    return () => clearInterval(interval);
-  }, [startCountdown, minutes, seconds]);
+  // useEffect(() => {
+  //   let interval;
+  //   if (startCountdown) {
+  //     interval = setInterval(() => {
+  //       const currentTime = new Date(Date.now());
+  //       const timeDiff = +timeExpires - +currentTime;
+  //       if (seconds === 0 && minutes === 0) {
+  //         dispatch(setShowNumber(true));
+  //         dispatch(setStartCountdown(false));
+  //         dispatch(setMinutes(null));
+  //         dispatch(setSeconds(null));
+  //         // call api to update parity record
+  //         dispatch(
+  //           getParityRecord(
+  //             "http://localhost:4000/game/getAllPeriodRecords",
+  //             { offset: 0, limit },
+  //             {
+  //               "Content-Type": "application/json",
+  //               Authorization: localStorage?.jwtToken,
+  //             }
+  //           )
+  //         );
+  //         dispatch(
+  //           getUserParityRecord(
+  //             `http://localhost:4000/game/getCurrentUserParityRecord`,
+  //             { offset: 0, limit, userEmail },
+  //             {
+  //               "Content-Type": "application/json",
+  //               Authorization: localStorage?.jwtToken,
+  //             }
+  //           )
+  //         );
+  //       } else {
+  //         dispatch(setMinutes(Math.floor((timeDiff / 1000 / 60) % 60)));
+  //         dispatch(setSeconds(Math.floor((timeDiff / 1000) % 60)));
+  //       };
+  //     }, [1000]);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [startCountdown, minutes, seconds]);
 
-  // event listenerz`
-  useEffect(() => {
-    function onFooEvent(value) {
-      console.log(value);
-      setShowNumber(false);
-      setStartCountdown(true);
-      setRandomNum(value?.randomNumber);
-      setPeriodId(value?.id);
-      setFooEvents((previous) => [...previous, value]);
-    }
-    socket.on("api", onFooEvent);
+  // // event listenerz`
+  // useEffect(() => {
+  //   function onFooEvent(value) {
+  //     console.log(value);
+  //     dispatch(setShowNumber(false));
+  //     dispatch(setStartCountdown(true));
+  //     dispatch(setRandomNum(value?.randomNumber));
+  //     dispatch(setPeriodId(value?.id));
+  //     setTimeExpires(new Date(value?.timeExpires));
+  //     setFooEvents((previous) => [...previous, value]);
+  //   }
+  //   socket.on("api", onFooEvent);
 
-    return () => {
-      socket.off("api", onFooEvent);
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("api", onFooEvent);
+  //   };
+  // }, []);
 
   const handleBtnRecharge = () => {
     navigate("/pages/person/recharge");
@@ -203,9 +222,10 @@ const BetGame = () => {
           {
             "Content-Type": "application/json",
             Authorization: localStorage?.jwtToken,
-          }, setParityRecLoading
+          },
+          setParityRecLoading
         )
-      )
+      );
     } else {
       setMyParityRecLoading(true);
       setMyParityDataSrc(myParityRecord?.slice(offsetVal, limit * page));
@@ -222,7 +242,7 @@ const BetGame = () => {
               price: el?.totalBetAmt,
               number: el?.luckyDrawNum,
               color: numMappedToClr[el?.luckyDrawNum],
-            }
+            };
           }
         })
       : [];
@@ -263,11 +283,11 @@ const BetGame = () => {
                 <HeadingCol bold>{periodId}</HeadingCol>
               </Period>
               <Countdown span={12}>
-                {startCountdown && (
+                {startCountdown && minutes >= 0 && seconds >= 0 && minutes !== null && seconds !== null&& (
                   <>
                     <HeadingCol>Count down</HeadingCol>
                     <HeadingCol size bold>
-                      0{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                      0{minutes}:{seconds > 0 && seconds < 10 ? `0${seconds}` : seconds} 
                     </HeadingCol>
                   </>
                 )}
@@ -352,7 +372,9 @@ const BetGame = () => {
             <Column
               className="result-column"
               title="Result"
-              render={(result) => <Rounds key={result} color={result} />}
+              render={(result) => {
+                return <Rounds key={result} color={result?.color} />;
+              }}
             />
           </RecordTable>
           {parityRecLoading && <Loader />}
@@ -427,7 +449,6 @@ const BetGame = () => {
           />
         </ParityRecordCont>
         {myParityRecLoading && <Loader />}
-        {console.log(selectedNum, "num here")}
         {isModalOpen && (
           <GameModal
             color={modalColor}

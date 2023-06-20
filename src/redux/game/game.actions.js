@@ -16,18 +16,51 @@ export const setMyParityRecord = (payload) => ({
   payload,
 });
 
+export const setPeriodId = (payload) => ({
+  type: gameActions.SET_PERIOD_ID,
+  payload,
+})
+
+export const setRandomNum = (payload) => ({
+  type: gameActions.SET_RANDOM_NUM,
+  payload,
+})
+
+export const setStartCountdown = (payload) => ({
+  type: gameActions.SET_START_COUNTDOWN,
+  payload,
+})
+
+export const setShowNumber = (payload) => ({
+  type: gameActions.SET_SHOW_NUMBER,
+  payload,
+})
+
+export const setMinutes = (payload) => ({
+  type: gameActions.SET_MINUTES,
+  payload,
+})
+
+export const setSeconds = (payload) => ({
+  type: gameActions.SET_SECONDS,
+  payload,
+})
+
+export const setTimeExpires = (payload) => ({
+  type: gameActions.SET_TIME_EXPIRES,
+  payload,
+})
+
 export const getParityRecord = (url, data, headers, setParityRecLoading) => (dispatch) => {
   axios
     .post(url, data, { headers })
     .then((res) => {
-      console.log("axios in action");
-      setParityRecLoading(false);
       dispatch(setTotalPeriodData(res?.data?.totalLen)); // length 
       dispatch(setParityRecord(res?.data?.periodsList));
-    })
-    .catch((err) => {
       setParityRecLoading(false);
-      console.log(err);
+    })
+    .catch(() => {
+      setParityRecLoading(false);
     });
 };
 
@@ -35,7 +68,6 @@ export const getUserParityRecord = (url, data, headers) => (dispatch) => {
   axios
     .post(url, data, { headers })
     .then((res) => {
-      console.log(res, "res");
       dispatch(setMyParityRecord(res?.data?.[0].bets));
     })
     .catch((err) => console.log(err, "rr"));

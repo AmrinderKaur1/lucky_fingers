@@ -1,8 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom'
+import useGameHook from './helpers/useGameHook';
 
 const ProtectedRoute = () => {
+
+    const gameHook = useGameHook();
+    
     const { isAuthenticated } = useSelector((state) => ({
         isAuthenticated: state.login.isAuthenticated,
       }));
