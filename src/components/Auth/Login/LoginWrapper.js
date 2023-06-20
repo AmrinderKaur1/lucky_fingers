@@ -35,7 +35,7 @@ import {
 } from "../../../redux/game/game.actions";
 import useGameHook from "../../../helpers/useGameHook";
 
-const Login = () => {
+function Login() {
   const gameHook = useGameHook();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -127,17 +127,15 @@ const Login = () => {
     [email, password]
   );
 
-  const maskedCode = () => {
-    return (
-      <>
-        {isPwVisible ? (
-          <EyeOutlined onClick={() => handleTypeOnClick("password")} />
-        ) : (
-          <EyeInvisibleOutlined onClick={() => handleTypeOnClick("password")} />
-        )}
-      </>
-    );
-  };
+  const maskedCode = () => (
+    <>
+      {isPwVisible ? (
+        <EyeOutlined onClick={() => handleTypeOnClick("password")} />
+      ) : (
+        <EyeInvisibleOutlined onClick={() => handleTypeOnClick("password")} />
+      )}
+    </>
+  );
 
   const handlePassBlur = useCallback(() => {
     setPwVisible(false);
@@ -151,7 +149,7 @@ const Login = () => {
     <>
       <AuthContainer>
         <Header>
-          <AuthLink to={"/login"}>
+          <AuthLink to="/login">
             <Icon />
             <h1>Login</h1>
           </AuthLink>
@@ -193,10 +191,10 @@ const Login = () => {
           Continue
         </Btn>
         <ButtonSec>
-          <AuthLink to={"/register"}>
+          <AuthLink to="/register">
             <Btn>Register</Btn>
           </AuthLink>
-          <AuthLink to={"/forgot-password"}>
+          <AuthLink to="/forgot-password">
             <Btn>Forgot Password ?</Btn>
           </AuthLink>
         </ButtonSec>
@@ -204,7 +202,7 @@ const Login = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default Login;
 

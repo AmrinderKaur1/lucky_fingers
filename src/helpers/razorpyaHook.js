@@ -1,9 +1,7 @@
-import React from "react";
-
 const razorpyaHook = async (props) => {
   const amount = props;
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
+  const loadScript = (src) =>
+    new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;
 
@@ -16,7 +14,6 @@ const razorpyaHook = async (props) => {
 
       document.body.appendChild(script);
     });
-  };
 
   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
@@ -32,7 +29,7 @@ const razorpyaHook = async (props) => {
     name: "Lucky fingers",
     description: "Thanks for the recharge!",
 
-    handler: function (response) {
+    handler(response) {
       alert(response.razorpay_payment_id);
       alert("payment successful!");
     },

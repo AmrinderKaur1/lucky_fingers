@@ -17,7 +17,7 @@ import {
 } from "./FooterElements";
 import { setActiveFooter } from "../../redux/auth/auth.actions";
 
-const Footer = () => {
+function Footer() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -94,6 +94,6 @@ const Footer = () => {
       </FooterBars>
     </FooterContainer>
   );
-};
+}
 
 export default Footer;

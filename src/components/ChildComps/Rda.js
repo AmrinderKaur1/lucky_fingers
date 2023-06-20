@@ -1,12 +1,12 @@
 import React from "react";
-import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 import styled from "styled-components";
+import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 
-const Rda = () => {
+function Rda() {
   return (
     <div>
       <Header style={{ margin: "0" }}>
-        <AuthLink to={"/profile"}>
+        <AuthLink to="/profile">
           {" "}
           {/* put link here  */}
           <Icon />
@@ -23,7 +23,8 @@ const Rda = () => {
             business content carefully before making prepayment bookings
             (prepayment lock price, payment settlement and shipment) /recovery
             or repurchase (prepayment lock price, shipping payment) before
-            making prepayment bookings to <text class="dfTxt">LuLu Malls</text>:
+            making prepayment bookings to{" "}
+            <text className="dfTxt">LuLu Malls</text>:
           </span>
         </Para>
         <Para>
@@ -112,7 +113,7 @@ const Rda = () => {
       </Content>
     </div>
   );
-};
+}
 
 const Content = styled.div`
   padding: 16px 16px 50px 16px;

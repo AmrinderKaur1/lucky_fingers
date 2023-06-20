@@ -1,6 +1,6 @@
 import React from "react";
-import { Divider } from "antd";
-import { Empty } from "antd";
+import { Divider, Empty } from "antd";
+
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 
 import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
@@ -14,11 +14,11 @@ import {
 
 const transactionRec = [];
 
-const Transactions = () => {
+function Transactions() {
   return (
     <RecordContainer>
       <Header>
-        <AuthLink to={"/profile"}>
+        <AuthLink to="/profile">
           <Icon />
           <h1>Transactions</h1>
         </AuthLink>
@@ -40,6 +40,6 @@ const Transactions = () => {
       </RecordRow>
     </RecordContainer>
   );
-};
+}
 
 export default Transactions;

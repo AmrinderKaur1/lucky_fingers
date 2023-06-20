@@ -20,39 +20,36 @@ const rechargeRec = [
   },
 ];
 
-const RechargeRecord = () => {
-  const renderInfo = () => {
-    return rechargeRec.map((value, index) => {
-      return (
-        <>
-          <RecordRow key={index}>
-            <Col span={2}>
-              <RoundIcon recordStatus={value.status}>
-                <WalletOutlined />
-              </RoundIcon>
-              &nbsp;
-            </Col>
-            <Col span={12}>
-              <Data>
-                {value.price}&nbsp;{value.status}
-              </Data>
-            </Col>
-            <Col span={10}>
-              <DateTime>
-                {value.date}&nbsp;{value.time}
-              </DateTime>
-            </Col>
-          </RecordRow>
-          <Divider style={{ margin: "0" }} />
-        </>
-      );
-    });
-  };
+function RechargeRecord() {
+  const renderInfo = () =>
+    rechargeRec.map((value, index) => (
+      <>
+        <RecordRow key={index}>
+          <Col span={2}>
+            <RoundIcon recordStatus={value.status}>
+              <WalletOutlined />
+            </RoundIcon>
+            &nbsp;
+          </Col>
+          <Col span={12}>
+            <Data>
+              {value.price}&nbsp;{value.status}
+            </Data>
+          </Col>
+          <Col span={10}>
+            <DateTime>
+              {value.date}&nbsp;{value.time}
+            </DateTime>
+          </Col>
+        </RecordRow>
+        <Divider style={{ margin: "0" }} />
+      </>
+    ));
 
   return (
     <RecordContainer>
       <Header>
-        <AuthLink to={"/pages/person/recharge"}>
+        <AuthLink to="/pages/person/recharge">
           {/* put link here  */}
           <Icon />
           <h1>Recharge Record</h1>
@@ -74,7 +71,7 @@ const RechargeRecord = () => {
       </RecordRow>
     </RecordContainer>
   );
-};
+}
 
 export default RechargeRecord;
 

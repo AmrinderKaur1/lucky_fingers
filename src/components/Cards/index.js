@@ -2,9 +2,10 @@ import React from "react";
 import { Card, Col, Row } from "antd";
 
 import { CardContainer, CustomCard, CardImg } from "./CardElements";
+
 const { Meta } = Card;
 
-const Cards = (props) => {
+function Cards(props) {
   const { CardData, margin, height } = props;
 
   return (
@@ -51,6 +52,6 @@ const Cards = (props) => {
       </Row>
     </CardContainer>
   );
-};
+}
 
 export default Cards;

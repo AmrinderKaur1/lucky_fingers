@@ -77,7 +77,7 @@ function App() {
               />
               <Route
                 path="/pages/person/password-reset"
-                element={<ForgotPassword isProfile={true} />}
+                element={<ForgotPassword isProfile />}
               />
 
               <Route

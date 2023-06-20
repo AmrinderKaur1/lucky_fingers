@@ -2,6 +2,7 @@ import React from "react";
 import { Divider, Col } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
+import styled from "styled-components";
 import {
   RecordContainer,
   Info,
@@ -14,7 +15,6 @@ import {
   RoundIcon,
 } from "./RechargeRecord";
 import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
-import styled from "styled-components";
 
 const withdrawlRec = [
   {
@@ -40,39 +40,36 @@ const withdrawlRec = [
   },
 ];
 
-const WithdrawlRecord = () => {
-  const renderInfo = () => {
-    return withdrawlRec.map((value, index) => {
-      return (
-        <>
-          <RecordRow key={index}>
-            <Col span={2}>
-              <RoundIcon recordStatus={value.status}>₹</RoundIcon>
-              &nbsp;
-            </Col>
-            <Col span={12}>
-              <Data>
-                {value.price}&nbsp;{value.status}
-                <br />
-                <FeeAccount>{value.feeAccount}</FeeAccount>
-              </Data>
-            </Col>
-            <Col span={10}>
-              <DateTime>
-                {value.date}&nbsp;{value.time}
-              </DateTime>
-            </Col>
-          </RecordRow>
-          <Divider style={{ margin: "0" }} key={index + 1} />
-        </>
-      );
-    });
-  };
+function WithdrawlRecord() {
+  const renderInfo = () =>
+    withdrawlRec.map((value, index) => (
+      <>
+        <RecordRow key={index}>
+          <Col span={2}>
+            <RoundIcon recordStatus={value.status}>₹</RoundIcon>
+            &nbsp;
+          </Col>
+          <Col span={12}>
+            <Data>
+              {value.price}&nbsp;{value.status}
+              <br />
+              <FeeAccount>{value.feeAccount}</FeeAccount>
+            </Data>
+          </Col>
+          <Col span={10}>
+            <DateTime>
+              {value.date}&nbsp;{value.time}
+            </DateTime>
+          </Col>
+        </RecordRow>
+        <Divider style={{ margin: "0" }} key={index + 1} />
+      </>
+    ));
 
   return (
     <RecordContainer>
       <Header>
-        <AuthLink to={"/pages/person/withdrawl"}>
+        <AuthLink to="/pages/person/withdrawl">
           <Icon />
           <h1>Withdrawl Record</h1>
         </AuthLink>
@@ -93,7 +90,7 @@ const WithdrawlRecord = () => {
       </RecordRow>
     </RecordContainer>
   );
-};
+}
 
 const FeeAccount = styled.p`
   color: #aaa;

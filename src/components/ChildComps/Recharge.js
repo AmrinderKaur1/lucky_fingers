@@ -7,7 +7,7 @@ import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 import { Btn } from "../MyProfile/MyProfileElements";
 import razorpyaHook from "../../helpers/razorpyaHook";
 
-const Recharge = () => {
+function Recharge() {
   const [rechargeAmount, setRechargeAmount] = useState(0);
 
   //   const handleChange = useCallback((amount) => {
@@ -18,19 +18,16 @@ const Recharge = () => {
     setRechargeAmount(parseInt(amt));
   }, []);
 
-  const renderOptions = (options) => {
-    return options.map((i, index) => {
-      return (
-        <Button
-          key={index}
-          onClick={() => handleClick(i)}
-          style={{ marginRight: "2%" }}
-        >
-          {i}
-        </Button>
-      );
-    });
-  };
+  const renderOptions = (options) =>
+    options.map((i, index) => (
+      <Button
+        key={index}
+        onClick={() => handleClick(i)}
+        style={{ marginRight: "2%" }}
+      >
+        {i}
+      </Button>
+    ));
 
   const renderPaymentMethods = () => {
     const methods = [
@@ -38,25 +35,23 @@ const Recharge = () => {
       "wonpay(500-50000)",
       "SEPROPAY_UPI(200-50000)",
     ];
-    return methods.map((val, index) => {
-      return (
-        <>
-          <Row style={{ padding: "14px 0" }}>
-            <Col span={10}>
-              <Checkbox style={{ fontSize: "14px" }} />
-            </Col>
-            <Col span={14} style={{ textAlign: "right" }}>
-              {val}
-            </Col>
-          </Row>
-          <Divider style={{ margin: "0" }} key={index} />
-        </>
-      );
-    });
+    return methods.map((val, index) => (
+      <>
+        <Row style={{ padding: "14px 0" }}>
+          <Col span={10}>
+            <Checkbox style={{ fontSize: "14px" }} />
+          </Col>
+          <Col span={14} style={{ textAlign: "right" }}>
+            {val}
+          </Col>
+        </Row>
+        <Divider style={{ margin: "0" }} key={index} />
+      </>
+    ));
   };
 
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
+  const loadScript = (src) =>
+    new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;
 
@@ -69,7 +64,6 @@ const Recharge = () => {
 
       document.body.appendChild(script);
     });
-  };
 
   const displayRazorpay1 = async (amount) => {
     const res = await loadScript(
@@ -88,7 +82,7 @@ const Recharge = () => {
       name: "Lucky fingers",
       description: "Thanks for the recharge!",
 
-      handler: function (response) {
+      handler(response) {
         alert(response.razorpay_payment_id);
         alert("payment successful!");
       },
@@ -106,12 +100,12 @@ const Recharge = () => {
   return (
     <Container>
       <Header>
-        <AuthLink to={"/profile"}>
+        <AuthLink to="/profile">
           {/* put link here  */}
           <Icon />
           <h1>Recharge</h1>
         </AuthLink>
-        <AuthLink to={"/pages/person/recharge-record"}>
+        <AuthLink to="/pages/person/recharge-record">
           <MenuOutlined />
         </AuthLink>
       </Header>
@@ -154,7 +148,7 @@ const Recharge = () => {
       </ChildContainer>
     </Container>
   );
-};
+}
 
 export default Recharge;
 

@@ -10,7 +10,7 @@ import {
 } from "./HomeHeaderElements";
 import logo from "../../images/logo.png";
 
-const HeaderHome = () => {
+function HeaderHome() {
   return (
     <>
       <HeaderContainer>
@@ -26,6 +26,6 @@ const HeaderHome = () => {
       </WelcomeBack>
     </>
   );
-};
+}
 
 export default HeaderHome;

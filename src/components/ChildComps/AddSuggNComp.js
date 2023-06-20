@@ -11,34 +11,32 @@ import {
   BorderlessInput,
 } from "./AddBankCard";
 
-const AddSuggNComp = () => {
-  const renderBankCard = () => {
-    return (
-      <BorderLessContainer>
-        <Row>
-          <BorderlessInput placeholder="Type" />
-        </Row>
-        <BoxDivider />
-        <Row>
-          <BorderlessInput placeholder="Out ID" />
-        </Row>
-        <BoxDivider />
-        <Row>
-          <BorderlessInput placeholder="WhatsApp" />
-        </Row>
-        <BoxDivider />
-        <Row>
-          <BorderlessInput placeholder="Description" />
-        </Row>
-        <BoxDivider />
-      </BorderLessContainer>
-    );
-  };
+function AddSuggNComp() {
+  const renderBankCard = () => (
+    <BorderLessContainer>
+      <Row>
+        <BorderlessInput placeholder="Type" />
+      </Row>
+      <BoxDivider />
+      <Row>
+        <BorderlessInput placeholder="Out ID" />
+      </Row>
+      <BoxDivider />
+      <Row>
+        <BorderlessInput placeholder="WhatsApp" />
+      </Row>
+      <BoxDivider />
+      <Row>
+        <BorderlessInput placeholder="Description" />
+      </Row>
+      <BoxDivider />
+    </BorderLessContainer>
+  );
 
   return (
     <RecordContainer style={{ boxShadow: "none" }}>
       <Header style={{ margin: "0" }}>
-        <AuthLink to={"/pages/person/complaint"}>
+        <AuthLink to="/pages/person/complaint">
           <Icon />
           <h1>Add Complaints & Suggestion</h1>
         </AuthLink>
@@ -50,7 +48,7 @@ const AddSuggNComp = () => {
       <PageButton>Continue</PageButton>
     </RecordContainer>
   );
-};
+}
 
 const ServiceInfo = styled.p`
   font-size: smaller;

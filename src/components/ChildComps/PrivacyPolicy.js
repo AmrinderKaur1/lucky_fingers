@@ -1,12 +1,12 @@
 import React from "react";
-import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 import styled from "styled-components";
+import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 
-const PrivacyPolicy = () => {
+function PrivacyPolicy() {
   return (
     <div>
       <Header style={{ marginBottom: "0" }}>
-        <AuthLink to={"/profile"}>
+        <AuthLink to="/profile">
           {" "}
           {/* put link here  */}
           <Icon />
@@ -127,7 +127,7 @@ const PrivacyPolicy = () => {
       </Content>
     </div>
   );
-};
+}
 
 const Content = styled.div`
   padding: 16px 16px 50px 16px;

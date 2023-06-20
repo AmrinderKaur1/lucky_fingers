@@ -71,5 +71,5 @@ export const getUserParityRecord = (url, data, headers) => (dispatch) => {
     .then((res) => {
       dispatch(setMyParityRecord(res?.data?.[0].bets));
     })
-    .catch((err) => console.log(err, "rr"));
+    .catch((err) => console.dir(err));
 };

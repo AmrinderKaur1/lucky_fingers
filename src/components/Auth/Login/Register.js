@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 import styled from "styled-components";
 
+import axios from "axios";
 import {
   AuthContainer,
   Header,
@@ -31,7 +32,6 @@ import {
   setUserContactNum,
 } from "../../../redux/auth/auth.actions";
 import { auth } from "../../../Firebase";
-import axios from "axios";
 import useGameHook from "../../../helpers/useGameHook";
 
 export const handleNumericKeyPress = (e) => {
@@ -43,7 +43,7 @@ export const handleNumericKeyPress = (e) => {
   }
 };
 
-const Register = () => {
+function Register() {
   const gameHook = useGameHook();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -156,31 +156,27 @@ const Register = () => {
     [isPwVisible, confirmPwVisible]
   );
 
-  const maskedCode = () => {
-    return (
-      <>
-        {isPwVisible ? (
-          <EyeOutlined onClick={() => handleTypeOnClick("password")} />
-        ) : (
-          <EyeInvisibleOutlined onClick={() => handleTypeOnClick("password")} />
-        )}
-      </>
-    );
-  };
+  const maskedCode = () => (
+    <>
+      {isPwVisible ? (
+        <EyeOutlined onClick={() => handleTypeOnClick("password")} />
+      ) : (
+        <EyeInvisibleOutlined onClick={() => handleTypeOnClick("password")} />
+      )}
+    </>
+  );
 
-  const maskedConfirmPass = () => {
-    return (
-      <>
-        {confirmPwVisible ? (
-          <EyeOutlined onClick={() => handleTypeOnClick("confirmPass")} />
-        ) : (
-          <EyeInvisibleOutlined
-            onClick={() => handleTypeOnClick("confirmPass")}
-          />
-        )}
-      </>
-    );
-  };
+  const maskedConfirmPass = () => (
+    <>
+      {confirmPwVisible ? (
+        <EyeOutlined onClick={() => handleTypeOnClick("confirmPass")} />
+      ) : (
+        <EyeInvisibleOutlined
+          onClick={() => handleTypeOnClick("confirmPass")}
+        />
+      )}
+    </>
+  );
 
   const handleConfirmPassFocus = useCallback(() => {
     setConfirmPassError(false);
@@ -205,7 +201,7 @@ const Register = () => {
     <>
       <AuthContainer>
         <Header>
-          <AuthLink to={"/login"}>
+          <AuthLink to="/login">
             <Icon />
             <h1>Register</h1>
           </AuthLink>
@@ -269,7 +265,7 @@ const Register = () => {
           </Error>
           <CheckBx onChange={onChange} value={isAgreed}>
             I agree &nbsp;
-            <AuthLink to={"/pages/person/privacy"}>
+            <AuthLink to="/pages/person/privacy">
               <a href="">PRIVACY POLICY</a>
             </AuthLink>
           </CheckBx>
@@ -279,7 +275,7 @@ const Register = () => {
             {resCode === 400 ? (
               <>
                 Email already exists, try different one, or &nbsp;
-                <AuthLink to={"/login"}>
+                <AuthLink to="/login">
                   <a href="">LOGIN</a>
                 </AuthLink>{" "}
                 &nbsp; instead!{" "}
@@ -290,7 +286,7 @@ const Register = () => {
           </AuthError>
         )}
 
-        <AuthLink to={"/register"}>
+        <AuthLink to="/register">
           <Btn otp={false} disabled={checkDisabled()} onClick={handleRegister}>
             Register
           </Btn>
@@ -299,7 +295,7 @@ const Register = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default Register;
 

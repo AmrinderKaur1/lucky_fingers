@@ -38,7 +38,7 @@ const CardData = [
   },
 ];
 
-const SearchPage = () => {
+function SearchPage() {
   const gameHook = useGameHook();
   return (
     <>
@@ -50,11 +50,11 @@ const SearchPage = () => {
           size="large"
           // onSearch={onSearch}
         />
-        <Cards CardData={CardData} margin={false} height={true} />
+        <Cards CardData={CardData} margin={false} height />
       </SearchContainer>
       <Footer />
     </>
   );
-};
+}
 
 export default SearchPage;

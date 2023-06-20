@@ -11,14 +11,13 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
-import { Balance, ChildContainer } from "./Recharge";
+import { Balance, ChildContainer, PageButton } from "./Recharge";
 import {
   DropdownCol,
   DropdownContainer,
   DropdownA,
+  ContentContainer,
 } from "../MyProfile/MyProfileElements";
-import { ContentContainer } from "../MyProfile/MyProfileElements";
-import { PageButton } from "./Recharge";
 
 const withdrawlOptionsData = {
   option: ["Bank Card Withdrawl", "UPI Withdrawl"],
@@ -28,7 +27,7 @@ const withdrawlOptionsData = {
   ],
 };
 
-const Withdrawl = () => {
+function Withdrawl() {
   const navigate = useNavigate();
   const [openSubOptionA, setOpenSubOptionA] = useState(false);
   const [openSubOptionB, setOpenSubOptionB] = useState(false);
@@ -53,79 +52,73 @@ const Withdrawl = () => {
     }
   };
 
-  const renderDropdown = (content) => {
-    return content.map((val, index) => {
-      return (
-        <div key={index}>
-          <Row onClick={() => handleClick(val)}>
-            <Col span={24} style={{ padding: "0 35px", height: "20px" }}>
-              {val}
-            </Col>
-          </Row>
-          <Divider style={{ margin: "6px" }} />
-        </div>
-      );
-    });
-  };
-
-  const renderWithdrawlOptions = () => {
-    return (
-      <>
-        <Row>
-          <DropdownCol span={24} style={{ padding: "0 15px" }}>
-            <DropdownContainer>
-              {withdrawlOptionsData.option[0]}
-            </DropdownContainer>
-            <DropdownA onClick={() => setOpenSubOptionA(!openSubOptionA)}>
-              {openSubOptionA ? <UpOutlined /> : <DownOutlined />}
-            </DropdownA>
-          </DropdownCol>
+  const renderDropdown = (content) =>
+    content.map((val, index) => (
+      <div key={index}>
+        <Row onClick={() => handleClick(val)}>
+          <Col span={24} style={{ padding: "0 35px", height: "20px" }}>
+            {val}
+          </Col>
         </Row>
         <Divider style={{ margin: "6px" }} />
-        {openSubOptionA && renderDropdown(withdrawlOptionsData.subOption[0])}
+      </div>
+    ));
 
-        <Row>
-          <DropdownCol span={24} style={{ padding: "0 15px" }}>
-            <DropdownContainer>
-              {withdrawlOptionsData.option[1]}
-            </DropdownContainer>
-            <DropdownA onClick={() => setOpenSubOptionB(!openSubOptionB)}>
-              {openSubOptionB ? <UpOutlined /> : <DownOutlined />}
-            </DropdownA>
-          </DropdownCol>
-        </Row>
-        <Divider style={{ margin: "6px" }} />
-        {openSubOptionB && renderDropdown(withdrawlOptionsData.subOption[1])}
-      </>
-    );
+  const renderWithdrawlOptions = () => (
+    <>
+      <Row>
+        <DropdownCol span={24} style={{ padding: "0 15px" }}>
+          <DropdownContainer>
+            {withdrawlOptionsData.option[0]}
+          </DropdownContainer>
+          <DropdownA onClick={() => setOpenSubOptionA(!openSubOptionA)}>
+            {openSubOptionA ? <UpOutlined /> : <DownOutlined />}
+          </DropdownA>
+        </DropdownCol>
+      </Row>
+      <Divider style={{ margin: "6px" }} />
+      {openSubOptionA && renderDropdown(withdrawlOptionsData.subOption[0])}
 
-    // return withdrawlOptionsData.option.map((val, index) => {
-    //   return (
-    //     <div key={index}>
-    //       <Row>
-    //         <DropdownCol span={24}>
-    //           <DropdownContainer>{val}</DropdownContainer>
-    //           <DropdownA onClick={() => handleOptionClick(index)}>
-    //             {openSubOption === index ? <UpOutlined /> : <DownOutlined />}
-    //           </DropdownA>
-    //         </DropdownCol>
-    //       </Row>
-    //       <Divider style={{ margin: "6px" }} />
-    //       {/* {openSubOption !== -1 &&
-    //         renderDropdown(withdrawlOptionsData.subOption[index])} */}
-    //     </div>
-    //   );
-    // });
-  };
+      <Row>
+        <DropdownCol span={24} style={{ padding: "0 15px" }}>
+          <DropdownContainer>
+            {withdrawlOptionsData.option[1]}
+          </DropdownContainer>
+          <DropdownA onClick={() => setOpenSubOptionB(!openSubOptionB)}>
+            {openSubOptionB ? <UpOutlined /> : <DownOutlined />}
+          </DropdownA>
+        </DropdownCol>
+      </Row>
+      <Divider style={{ margin: "6px" }} />
+      {openSubOptionB && renderDropdown(withdrawlOptionsData.subOption[1])}
+    </>
+  );
 
+  // return withdrawlOptionsData.option.map((val, index) => {
+  //   return (
+  //     <div key={index}>
+  //       <Row>
+  //         <DropdownCol span={24}>
+  //           <DropdownContainer>{val}</DropdownContainer>
+  //           <DropdownA onClick={() => handleOptionClick(index)}>
+  //             {openSubOption === index ? <UpOutlined /> : <DownOutlined />}
+  //           </DropdownA>
+  //         </DropdownCol>
+  //       </Row>
+  //       <Divider style={{ margin: "6px" }} />
+  //       {/* {openSubOption !== -1 &&
+  //         renderDropdown(withdrawlOptionsData.subOption[index])} */}
+  //     </div>
+  //   );
+  // });
   return (
     <div>
       <Header>
-        <AuthLink to={"/profile"}>
+        <AuthLink to="/profile">
           <Icon />
           <h1>Withdrawl</h1>
         </AuthLink>
-        <AuthLink to={"/pages/person/withdrawl-record"}>
+        <AuthLink to="/pages/person/withdrawl-record">
           <MenuOutlined className="side-icon" />
         </AuthLink>
       </Header>
@@ -156,7 +149,7 @@ const Withdrawl = () => {
       </ChildContainer>
     </div>
   );
-};
+}
 
 const PassLabel = styled.label`
   font-weight: bold;

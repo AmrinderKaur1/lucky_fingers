@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Checkbox, Button as Btn } from "antd";
 
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import {
   GameModalByColor,
   ModalHeading,
@@ -14,13 +16,12 @@ import {
   Note,
   CustomModalFooter,
   DefaultPaymentOptions,
+  DividerZero,
 } from "./GameElements";
-import { DividerZero } from "./GameElements";
-import { useDispatch, useSelector } from "react-redux";
-import { handleChangeModalVisibility } from "../../helpers/modals";
-import axios from "axios";
 
-const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
+import { handleChangeModalVisibility } from "../../helpers/modals";
+
+function GameModal({ color, heading, periodId, randomNum, numSelected }) {
   const dispatch = useDispatch();
   const { isJoinGreenVisible, isJoinBlueVisible, isJoinRedVisible } =
     useSelector((state) => ({
@@ -33,7 +34,7 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
   const [presaleAgreed, setPresaleAgreed] = useState(false);
 
   const [val, setVal] = useState(0);
-  let modalName =
+  const modalName =
     color === "green"
       ? "isJoinGreenVisible"
       : color === "blue"
@@ -52,25 +53,21 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
 
     if (randomNum === numSelected) {
       return 92;
-    } else if (color?.toLowerCase() === "green" && [0, 5].includes(randomNum)) {
-      return 5;
-    } else if (
-      color?.toLowerCase() === "red" &&
-      [2, 4, 6, 8].includes(randomNum)
-    ) {
-      return 2.5;
-    } else if (
-      color?.toLowerCase() === "blue" &&
-      [1, 3, 7, 9].includes(randomNum)
-    ) {
-      return 2.5;
-    } else {
-      // tbd
-      // what if user bets on
-      // a.) number and number !== randomNum -> what investment
-      // b.) if user chooses clr, and random num belongs to diff clr, -> what investment
-      return 0; // from mine side in case, i.e. user lost all his invested money
     }
+    if (color?.toLowerCase() === "green" && [0, 5].includes(randomNum)) {
+      return 5;
+    }
+    if (color?.toLowerCase() === "red" && [2, 4, 6, 8].includes(randomNum)) {
+      return 2.5;
+    }
+    if (color?.toLowerCase() === "blue" && [1, 3, 7, 9].includes(randomNum)) {
+      return 2.5;
+    }
+    // tbd
+    // what if user bets on
+    // a.) number and number !== randomNum -> what investment
+    // b.) if user chooses clr, and random num belongs to diff clr, -> what investment
+    return 0; // from mine side in case, i.e. user lost all his invested money
   };
 
   const handleOk = () => {
@@ -118,26 +115,24 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
   const handleOpen = () => {
     if (color === "green") {
       return isJoinGreenVisible;
-    } else if (color === "blue") {
+    }
+    if (color === "blue") {
       return isJoinBlueVisible;
     }
     return isJoinRedVisible;
   };
 
-  const getContractLenOptions = () => {
-    return [10, 100, 1000, 10_000].map((el, idx) => {
-      return (
-        <DefaultPaymentOptions
-          onClick={() => setDefaultAmtSelected(el)}
-          key={idx * 2}
-          className={defaultAmtSelected === el ? "active" : ""}
-          clr={color}
-        >
-          {el}
-        </DefaultPaymentOptions>
-      );
-    });
-  };
+  const getContractLenOptions = () =>
+    [10, 100, 1000, 10_000].map((el, idx) => (
+      <DefaultPaymentOptions
+        onClick={() => setDefaultAmtSelected(el)}
+        key={idx * 2}
+        className={defaultAmtSelected === el ? "active" : ""}
+        clr={color}
+      >
+        {el}
+      </DefaultPaymentOptions>
+    ));
 
   const handleManualAmtChange = (e) => {
     console.log(e.target.value, "ee");
@@ -152,7 +147,7 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
       onOk={handleOk}
       onCancel={handleCancel}
       footer={false}
-      destroyOnClose={true}
+      destroyOnClose
       className={modalName}
       heading={heading}
     >
@@ -175,9 +170,7 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
             <Increment onClick={increment}>+</Increment>
           </Operations>
         </NumberBox>
-        <Note>
-          Total contract money is {defaultAmtSelected ? defaultAmtSelected : 0}.
-        </Note>
+        <Note>Total contract money is {defaultAmtSelected || 0}.</Note>
         <Checkbox onClick={() => setPresaleAgreed(!presaleAgreed)}>
           I agree &nbsp;
         </Checkbox>
@@ -196,6 +189,6 @@ const GameModal = ({ color, heading, periodId, randomNum, numSelected }) => {
       </CustomModalFooter>
     </GameModalByColor>
   );
-};
+}
 
 export default GameModal;

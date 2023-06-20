@@ -39,24 +39,22 @@ const CardData = [
   },
 ];
 
-const Home = () => {
+function Home() {
   const gameHook = useGameHook();
   return (
     <>
       <HeaderHome />
       <Carousel autoplay>
-        {[carousel1, carousel2, carousel3, carousel4].map((el, key) => {
-          return (
-            <CarouselElement>
-              <CarouselImg src={el} alt={key} key={key} />
-            </CarouselElement>
-          );
-        })}
+        {[carousel1, carousel2, carousel3, carousel4].map((el, key) => (
+          <CarouselElement>
+            <CarouselImg src={el} alt={key} key={key} />
+          </CarouselElement>
+        ))}
       </Carousel>
-      <Cards CardData={CardData} margin={true} />
+      <Cards CardData={CardData} margin />
       <Footer />
     </>
   );
-};
+}
 
 export default Home;

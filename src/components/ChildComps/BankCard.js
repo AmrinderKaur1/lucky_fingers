@@ -9,14 +9,14 @@ import {
   ExclamationCircleFilled,
 } from "@ant-design/icons";
 
+import styled from "styled-components";
 import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 import { PageButton } from "./Recharge";
-import styled from "styled-components";
 
 const bankCards = ["", "State Bank of India"];
 const { confirm } = Modal;
 
-const BankCard = () => {
+function BankCard() {
   const [open, setOpen] = useState(false);
 
   const handleInfo = () => {
@@ -40,49 +40,44 @@ const BankCard = () => {
     });
   };
 
-  const renderInfo = () => {
-    return bankCards.map((val, key) => {
-      return (
-        <ChildContainer key={key}>
-          <Row>
-            <Col span={2}>
-              <CreditCardOutlined />
-            </Col>
-            <Col span={20}>{val}</Col>
-            <Col span={2}>
-              <InfoCircleOutlined onClick={handleInfo} />
-            </Col>
-          </Row>
-        </ChildContainer>
-      );
-    });
-  };
+  const renderInfo = () =>
+    bankCards.map((val, key) => (
+      <ChildContainer key={key}>
+        <Row>
+          <Col span={2}>
+            <CreditCardOutlined />
+          </Col>
+          <Col span={20}>{val}</Col>
+          <Col span={2}>
+            <InfoCircleOutlined onClick={handleInfo} />
+          </Col>
+        </Row>
+      </ChildContainer>
+    ));
 
   const handleCancel = () => {
     setOpen(false);
   };
 
-  const renderModal = () => {
-    return (
-      <Modal open={open} title="Actions" footer={[]} onCancel={handleCancel}>
-        <p>Do you want to edit or delete the Card ?</p>
-        <Actions>
-          <PageButton style={{ margin: "0" }}>
-            <EditOutlined /> Edit
-          </PageButton>
-          <PageButton style={{ margin: "0" }} onClick={showConfirm}>
-            <DeleteOutlined />
-            Delete
-          </PageButton>
-        </Actions>
-      </Modal>
-    );
-  };
+  const renderModal = () => (
+    <Modal open={open} title="Actions" footer={[]} onCancel={handleCancel}>
+      <p>Do you want to edit or delete the Card ?</p>
+      <Actions>
+        <PageButton style={{ margin: "0" }}>
+          <EditOutlined /> Edit
+        </PageButton>
+        <PageButton style={{ margin: "0" }} onClick={showConfirm}>
+          <DeleteOutlined />
+          Delete
+        </PageButton>
+      </Actions>
+    </Modal>
+  );
 
   return (
     <BankCardContainer>
       <Header style={{ marginBottom: "0" }}>
-        <AuthLink to={"/profile"}>
+        <AuthLink to="/profile">
           {/* put link here  */}
           <Icon />
           <h1>Bank Card</h1>
@@ -101,7 +96,7 @@ const BankCard = () => {
       {open && renderModal()}
     </BankCardContainer>
   );
-};
+}
 
 export const ChildContainer = styled.div`
   padding: 14px;

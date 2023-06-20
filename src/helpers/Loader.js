@@ -3,13 +3,13 @@ import styled from "styled-components";
 
 import Spinner from "../images/Spinner.gif";
 
-const Loader = () => {
+function Loader() {
   return (
     <LoaderWrapper>
       <Img src={Spinner} alt="Loading..." />
     </LoaderWrapper>
   );
-};
+}
 
 const LoaderWrapper = styled.div`
   text-align: right;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { socket } from "../../Socket";
 
@@ -67,7 +67,7 @@ const useGameHook = () => {
       }, [1000]);
     }
     return () => clearInterval(interval);
-  }, [startCountdown, minutes, seconds]);
+  }, [startCountdown, minutes, seconds, dispatch, timeExpires, userEmail]);
 
   // event listenerz`
   useEffect(() => {
@@ -84,7 +84,7 @@ const useGameHook = () => {
     return () => {
       socket.off("api", onFooEvent);
     };
-  }, []);
+  }, [dispatch]);
 };
 
 export default useGameHook;
