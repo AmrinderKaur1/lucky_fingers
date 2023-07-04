@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Row, Col, Modal } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Row, Col, Modal, Empty } from "antd";
+import axios from "axios";
 import styled from "styled-components";
 import {
   PlusOutlined,
@@ -14,6 +15,9 @@ import EditAddress from "./EditAddress";
 import { Header, AuthLink, Icon } from "../Auth/Login/LoginElements";
 
 import { PageButton } from "./Recharge";
+import { setAddresses } from "../../redux/auth/auth.actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const addressData = [
   {
@@ -43,28 +47,49 @@ const addressData = [
 ];
 
 function Address(props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {addresses} = useSelector((state) => ({
+    addresses: state.login.addresses,
+  }));
+
   const [open, setOpen] = useState(false);
   const [editAddressOpen, setEditAddressOpen] = useState(false);
   const [isAddAddress, setAddAddress] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(true);
+  const [selectedAddressId, setSelectedAddressId] = useState('');
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
+    axios.post(`http://localhost:4000/api/address/delete-address/${selectedAddressId}`, {}, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwtToken,
+      },
+    }).then((res) => {
+      console.log('res in deleete', res)
+    }).catch(err => console.log('err', err))
     setOpen(false);
-  };
+  }, [open, localStorage?.jwtToken]);
 
-  const handleInfo = () => {
+  const handleInfo = useCallback((id) => {
     setOpen(true);
-  };
+    setSelectedAddressId(id);
+  }, [selectedAddressId, open]);
 
-  const renderAddress = () =>
-    addressData.map((info, index) => (
-      <ChildContainer key={index}>
+  const renderAddress = () => {
+    if (!addresses?.data?.length) {
+      return <Empty />
+    }
+    return addresses?.data?.map((info, index) => (
+      <ChildContainer key={index+1}>
         <Row>
           <Col span={2}>
             <CreditCardOutlined />
           </Col>
           <Col span={20}>
             <NameNumber>
-              {info.name}&nbsp;{info.mobile}
+              {info.fullName}&nbsp;{info.mobileNum}
             </NameNumber>
             <Addrs>
               {info.detailedAddress}
@@ -74,24 +99,21 @@ function Address(props) {
             </Addrs>
           </Col>
           <Col span={2}>
-            <InfoCircleOutlined onClick={handleInfo} />
+            <InfoCircleOutlined onClick={() => handleInfo(info?._id)} />
           </Col>
         </Row>
       </ChildContainer>
-    ));
-  const handleEditAddress = () => {
-    setEditAddressOpen(true);
-  };
-  const handleAddAddress = () => {
-    setAddAddress(true);
-  };
+  ))};
 
   const renderModal = () => (
     <Modal open={open} title="Actions" footer={[]} onCancel={handleCancel}>
       <p>Do you want to edit or delete the address ?</p>
       <Actions>
         <PageButton style={{ margin: "0" }}>
-          <EditOutlined onClick={handleEditAddress} /> Edit
+          <EditOutlined onClick={() => navigate("/pages/person/add-address",{ state: {
+            heading: "Edit Address",
+            id: selectedAddressId,
+          }})} /> Edit
         </PageButton>
         <PageButton style={{ margin: "0" }} onClick={handleCancel}>
           <DeleteOutlined />
@@ -100,6 +122,23 @@ function Address(props) {
       </Actions>
     </Modal>
   );
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/api/address", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage?.jwtToken,
+        },
+      })
+      .then((res) => {
+        setAddressLoading(false);
+        dispatch(setAddresses(res));
+      })
+      .catch(() => {
+        setAddressLoading(false);
+      });
+  }, []);
 
   return (
     <>
@@ -115,10 +154,9 @@ function Address(props) {
           </AuthLink>
         </Header>
         {renderAddress()}
+        {/* to delete any address entry  */}
         {open && renderModal()}
       </div>
-      {editAddressOpen && <EditAddress heading="Edit Address" />}
-      {isAddAddress && <EditAddress heading="Add Address" />}
     </>
   );
 }

@@ -5,6 +5,7 @@ export const authInitialState = {
   userEmail: "",
   userContactNum: "",
   activeFooter: "home",
+  addresses: [],
 };
 
 export default (state = authInitialState, action) => {
@@ -17,6 +18,8 @@ export default (state = authInitialState, action) => {
       return { ...state, userContactNum: action.payload };
     case authActions.SET_ACTIVE_FOOTER:
       return { ...state, activeFooter: action.payload };
+    case authActions.SET_ADDRESSES:
+      return { ...state, addresses: action.payload };
     default:
       return state;
   }

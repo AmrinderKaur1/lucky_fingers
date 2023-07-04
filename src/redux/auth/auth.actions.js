@@ -19,3 +19,8 @@ export const setActiveFooter = (payload) => ({
   type: authActions.SET_ACTIVE_FOOTER,
   payload,
 });
+
+export const setAddresses = (payload) => ({
+  type: authActions.SET_ADDRESSES,
+  payload,
+})

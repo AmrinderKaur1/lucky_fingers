@@ -182,4 +182,9 @@ export const PageButton = styled(Button)`
     background: #fff;
     border: 1px solid linear-gradient(90deg, #ff9801, #ff570a);
   }
+  &:disabled {
+    cursor: not-allowed;
+    background: #fff;
+    color: gray;
+  }
 `;
