@@ -18,84 +18,67 @@ import { PageButton } from "./Recharge";
 import { setAddresses } from "../../redux/auth/auth.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-const addressData = [
-  {
-    name: "Karan",
-    mobile: "0000000010",
-    pincode: "13232",
-    state: "pb",
-    city: "hsp",
-    detailedAddress: "ola sipola",
-  },
-  {
-    name: "Karan",
-    mobile: "0000000010",
-    pincode: "13232",
-    state: "pb",
-    city: "hsp",
-    detailedAddress: "ola sipola",
-  },
-  {
-    name: "Karan",
-    mobile: "0000000010",
-    pincode: "13232",
-    state: "pb",
-    city: "hsp",
-    detailedAddress: "ola sipola",
-  },
-];
+import Loader from "../../helpers/Loader";
 
 function Address(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {addresses} = useSelector((state) => ({
+  const { addresses } = useSelector((state) => ({
     addresses: state.login.addresses,
   }));
 
   const [open, setOpen] = useState(false);
-  const [editAddressOpen, setEditAddressOpen] = useState(false);
-  const [isAddAddress, setAddAddress] = useState(false);
   const [addressLoading, setAddressLoading] = useState(true);
-  const [selectedAddressId, setSelectedAddressId] = useState('');
+  const [selectedAddressId, setSelectedAddressId] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const handleCancel = useCallback(() => {
-    axios.post(`http://localhost:4000/api/address/delete-address/${selectedAddressId}`, {}, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.jwtToken,
-      },
-    }).then((res) => {
-      console.log('res in deleete', res)
-    }).catch(err => console.log('err', err))
+  const handleDelete = useCallback(async () => {
+    setDeleteLoading(true);
+    await axios
+      .post(
+        `http://localhost:4000/api/address/delete-address/${selectedAddressId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.jwtToken,
+          },
+        }
+      )
+      .then(() => getAddress());
     setOpen(false);
+    setDeleteLoading(false);
   }, [open, localStorage?.jwtToken]);
 
-  const handleInfo = useCallback((id) => {
-    setOpen(true);
-    setSelectedAddressId(id);
-  }, [selectedAddressId, open]);
+  const handleInfo = useCallback(
+    (id) => {
+      setOpen(true);
+      setSelectedAddressId(id);
+    },
+    [selectedAddressId, open]
+  );
 
   const renderAddress = () => {
     if (!addresses?.data?.length) {
-      return <Empty />
+      return <Empty />;
     }
     return addresses?.data?.map((info, index) => (
-      <ChildContainer key={index+1}>
+      <ChildContainer key={index + 1}>
         <Row>
           <Col span={2}>
             <CreditCardOutlined />
           </Col>
           <Col span={20}>
             <NameNumber>
-              {info.fullName}&nbsp;{info.mobileNum}
+              <span>Fullname: </span>{info.fullName} <br/>
+              <span>Contact Number: </span>{info.mobileNum}
             </NameNumber>
             <Addrs>
-              {info.detailedAddress}
-              {info.city}
-              {info.state}
-              {info.pincode}
+            <span>Detailed Address: </span>{info.detailedAddress}<br/>
+            <span>City: </span>{info.city}<br/>
+            <span>State: </span>{info.state}<br/>
+            <span>Pincode: </span>{info.pincode}<br/>
             </Addrs>
           </Col>
           <Col span={2}>
@@ -103,19 +86,35 @@ function Address(props) {
           </Col>
         </Row>
       </ChildContainer>
-  ))};
+    ));
+  };
+
+  const handleCancel = useCallback(() => {
+    setOpen(false);
+  }, [open])
 
   const renderModal = () => (
     <Modal open={open} title="Actions" footer={[]} onCancel={handleCancel}>
       <p>Do you want to edit or delete the address ?</p>
       <Actions>
         <PageButton style={{ margin: "0" }}>
-          <EditOutlined onClick={() => navigate("/pages/person/add-address",{ state: {
-            heading: "Edit Address",
-            id: selectedAddressId,
-          }})} /> Edit
+          <EditOutlined
+            onClick={() =>
+              navigate("/pages/person/add-address", {
+                state: {
+                  heading: "Edit Address",
+                  id: selectedAddressId,
+                },
+              })
+            }
+          />{" "}
+          Edit
         </PageButton>
-        <PageButton style={{ margin: "0" }} onClick={handleCancel}>
+        <PageButton
+          style={{ margin: "0" }}
+          onClick={handleDelete}
+          loading={deleteLoading}
+        >
           <DeleteOutlined />
           Delete
         </PageButton>
@@ -123,8 +122,9 @@ function Address(props) {
     </Modal>
   );
 
-  useEffect(() => {
-    axios
+  const getAddress = async () => {
+    setAddressLoading(true);
+    await axios
       .get("http://localhost:4000/api/address", {
         headers: {
           "Content-Type": "application/json",
@@ -132,12 +132,13 @@ function Address(props) {
         },
       })
       .then((res) => {
-        setAddressLoading(false);
         dispatch(setAddresses(res));
-      })
-      .catch(() => {
-        setAddressLoading(false);
       });
+    setAddressLoading(false);
+  };
+
+  useEffect(() => {
+    getAddress();
   }, []);
 
   return (
@@ -153,19 +154,29 @@ function Address(props) {
             <PlusOutlined className="side-icon" />
           </AuthLink>
         </Header>
-        {renderAddress()}
-        {/* to delete any address entry  */}
-        {open && renderModal()}
+        {addressLoading && <Loader />}
+        {!addressLoading && renderAddress()}
+        {open && !addressLoading && renderModal()}
       </div>
     </>
   );
 }
 
-const NameNumber = styled.p``;
+const NameNumber = styled.p`
+  span {
+    color: #ff8404;
+    font-weight: bold;
+  }
+`;
+
 const Addrs = styled.p`
   color: #8799a3;
   font-size: 12px;
   padding: 4px 0;
+  span {
+    color: #e7a764;
+    font-weight: bold;
+  }
 `;
 
 export default Address;
